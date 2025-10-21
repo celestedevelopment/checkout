@@ -160,7 +160,7 @@ export default function Home() {
                       verificationCode={verificationCode}
                       onCodeChange={setVerificationCode}
                       onBackToEmail={() => setShowVerification(false)}
-                      onResendCode={handleResendCode}
+                      onResendCode={() => handleResendCode(email)}
                       verificationError={verificationError}
                       codeError={codeError}
                       resendCooldown={resendCooldown}
