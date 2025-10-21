@@ -19,7 +19,7 @@ export default function StoreHeader({ size = 'default', className = '' }: Props)
         className="block"
       >
         <Image
-          src="/favicon.png"
+          src="/Header/LogoBoomFI.png"
           alt="BoomFi Logo"
           width={logoSize}
           height={logoSize}
