@@ -18,6 +18,9 @@ export const metadata: Metadata = {
     shortcut: "/favicon.ico",
     apple: "/favicon.ico",
   },
+  other: {
+    'google': 'notranslate',
+  },
 };
 
 export default function RootLayout({
@@ -26,7 +29,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" translate="no">
       <head>
         <Script
           id="clarity-script"
@@ -45,6 +48,7 @@ export default function RootLayout({
       <body
         className={`${inter.variable} font-inter antialiased`}
         suppressHydrationWarning={true}
+        translate="no"
       >
         <TranslationProvider>
           <CurrencyProvider>
