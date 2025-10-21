@@ -29,13 +29,15 @@ export default function FooterDefault({ variant = 'default', className = '' }: F
           href="https://acctual.com" 
           target="_blank" 
           rel="noopener noreferrer"
+          className="select-none"
         >
           <Image
             src="/Footer/acctual.com logo.svg"
             alt="Acctual Logo"
             width={logoWidth}
             height={logoHeight}
-            className={`${logoClass} cursor-pointer hover:opacity-80 transition-opacity`}
+            className={`${logoClass} cursor-pointer hover:opacity-80 transition-opacity select-none`}
+            draggable={false}
           />
         </a>
       </div>
