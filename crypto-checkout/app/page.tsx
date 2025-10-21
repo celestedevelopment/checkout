@@ -814,58 +814,6 @@ export default function Home() {
               </div>
             </div>
 
-            {/* Indicatore visivo per l'effetto Attention Grabber */}
-            <div className={`p-4 rounded-lg border-2 transition-all duration-300 ${
-              !isVisible 
-                ? 'bg-orange-100 border-orange-400 text-orange-800' 
-                : showCheckoutReminder
-                ? 'bg-red-100 border-red-400 text-red-800'
-                : 'bg-green-100 border-green-400 text-green-800'
-            }`}>
-              <div className="flex items-center gap-2">
-                <div className={`w-3 h-3 rounded-full ${
-                  !isVisible 
-                    ? 'bg-orange-500' 
-                    : showCheckoutReminder
-                    ? 'bg-red-500 animate-pulse'
-                    : 'bg-green-500'
-                }`}></div>
-                <span className="font-semibold">
-                  {!isVisible 
-                    ? `🔔 Attention Grabber attivo${isBlinking ? ' - LAMPEGGIANTE' : ''}` 
-                    : showCheckoutReminder
-                    ? '⏰ Reminder Checkout attivo - TERMINA IL CHECKOUT!'
-                    : '✅ Utente sulla pagina - Timer checkout attivo'
-                  }
-                </span>
-              </div>
-              <p className="text-sm mt-2 opacity-75">
-                {!isVisible 
-                  ? 'Il titolo della tab sta lampeggiando per attirare l\'attenzione' 
-                  : showCheckoutReminder
-                  ? 'È passato 1 minuto - Il titolo mostra il reminder del checkout'
-                  : 'Dopo 1 minuto di permanenza apparirà il reminder del checkout'
-                }
-              </p>
-            </div>
-
-            {/* Mobile responsive note */}
-            <div className="md:hidden bg-blue-50 border border-blue-200 rounded-lg p-4 mt-4">
-              <h3 className="text-sm font-semibold text-blue-800 mb-2">📱 Mobile Layout</h3>
-              <p className="text-xs text-blue-700">
-                Su mobile il layout è a colonna singola: sezione grigia in alto (1/3 altezza) 
-                e contenuto scrollabile in basso (2/3 altezza).
-              </p>
-            </div>
-
-            {/* Desktop responsive note */}
-            <div className="hidden md:block bg-green-50 border border-green-200 rounded-lg p-6 mt-8">
-              <h3 className="text-base font-semibold text-green-800 mb-3">🖥️ Desktop Layout con Product Description</h3>
-              <p className="text-sm text-green-700">
-                Su desktop la descrizione del prodotto "Maker Division" è ora nella sezione sinistra 
-                sotto il logo e nome store. La sezione destra può contenere form di checkout o altri contenuti.
-              </p>
-            </div>
           </main>
         </div>
       </div>
