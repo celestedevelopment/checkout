@@ -4,7 +4,7 @@ interface EmailInputProps {
   email: string;
   onEmailChange: (email: string) => void;
   onVerificationStart: () => void;
-  sendVerificationCode: (email: string) => Promise<any>;
+  sendVerificationCode: (email: string) => Promise<{ success: boolean }>;
 }
 
 export default function EmailInput({ 

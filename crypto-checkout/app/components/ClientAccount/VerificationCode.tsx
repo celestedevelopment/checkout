@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import React from 'react';
 
 interface VerificationCodeProps {
   email: string;
@@ -115,7 +115,7 @@ export default function VerificationCode({
         )}
         
         <div className="text-xs text-gray-600 mb-2">
-          Didn't receive code? 
+          Didn&apos;t receive code? 
           <button 
             onClick={onResendCode}
             disabled={resendCooldown > 0 || isResending}
