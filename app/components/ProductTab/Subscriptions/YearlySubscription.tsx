@@ -1,11 +1,15 @@
 'use client';
 
+import { getPlanConfig } from '../../../utils/pricingConfig';
+
 interface YearlySubscriptionProps {
   isSelected: boolean;
   onSelect: () => void;
 }
 
 export default function YearlySubscription({ isSelected, onSelect }: YearlySubscriptionProps) {
+  const planConfig = getPlanConfig('yearly');
+  
   return (
     <div 
       className={`mt-4 p-4 rounded-lg border-2 cursor-pointer transition-all duration-200 ${
@@ -26,13 +30,17 @@ export default function YearlySubscription({ isSelected, onSelect }: YearlySubsc
           )}
         </div>
         <div>
-          <span className="text-2xl font-bold text-gray-900">$999</span>
-          <span className="text-gray-600 text-sm ml-1">/year</span>
+          <span className="text-2xl font-bold text-gray-900">{planConfig.displayPrice}</span>
+          <span className="text-gray-600 text-sm ml-1">/{planConfig.period}</span>
         </div>
       </div>
       <div className="flex items-center justify-between">
-        <p className="text-gray-600 text-sm">Yearly subscription</p>
-        <span className="bg-green-100 text-green-800 text-xs font-medium px-2 py-1 rounded">Save 15%</span>
+        <p className="text-gray-600 text-sm">{planConfig.name}</p>
+        {planConfig.savings && (
+          <span className="bg-green-100 text-green-800 text-xs font-medium px-2 py-1 rounded">
+            {planConfig.savings.displayText}
+          </span>
+        )}
       </div>
     </div>
   );

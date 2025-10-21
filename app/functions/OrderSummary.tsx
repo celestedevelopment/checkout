@@ -4,6 +4,7 @@ import StoreHeader from "../components/Header/StoreHeader";
 import ProductTitle from "../components/ProductTab/Product/ProductTitle";
 import ProductDescription from "../components/ProductTab/Product/ProductDescription";
 import FooterDefault from "../components/Footer/FooterDefault";
+import { getPlanConfig } from "../utils/pricingConfig";
 
 interface OrderSummaryProps {
   isOpen: boolean;
@@ -13,6 +14,8 @@ interface OrderSummaryProps {
 
 export default function OrderSummary({ isOpen, onClose, selectedPlan }: OrderSummaryProps) {
   if (!isOpen) return null;
+
+  const planConfig = getPlanConfig(selectedPlan);
 
   return (
     <div className="fixed inset-0 z-50">
@@ -60,13 +63,13 @@ export default function OrderSummary({ isOpen, onClose, selectedPlan }: OrderSum
               <div className="flex justify-between items-center">
                 <span className="text-sm text-gray-700 select-none">Plan</span>
                 <span className="text-sm font-medium text-gray-900 select-none">
-                  {selectedPlan === 'monthly' ? 'Monthly' : 'Yearly'}
+                  {planConfig.name}
                 </span>
               </div>
               <div className="flex justify-between items-center">
                 <span className="text-sm text-gray-700 select-none">Price</span>
                 <span className="text-sm font-medium text-gray-900 select-none">
-                  {selectedPlan === 'monthly' ? '$99/month' : '$999/year'}
+                  {planConfig.displayPrice}/{planConfig.period}
                 </span>
               </div>
               <div className="flex justify-between items-center">
@@ -75,10 +78,10 @@ export default function OrderSummary({ isOpen, onClose, selectedPlan }: OrderSum
                   {selectedPlan === 'monthly' ? 'Monthly' : 'Annual'}
                 </span>
               </div>
-              {selectedPlan === 'yearly' && (
+              {planConfig.savings && (
                 <div className="flex justify-between items-center">
                   <span className="text-sm text-gray-700 select-none">Savings</span>
-                  <span className="text-sm font-medium text-green-600 select-none">15% off</span>
+                  <span className="text-sm font-medium text-green-600 select-none">{planConfig.savings.displayText}</span>
                 </div>
               )}
             </div>
@@ -91,7 +94,7 @@ export default function OrderSummary({ isOpen, onClose, selectedPlan }: OrderSum
               <div className="flex justify-between items-center">
                 <span className="text-sm text-gray-700 select-none">Subtotal</span>
                 <span className="text-sm font-medium text-gray-900 select-none">
-                  {selectedPlan === 'monthly' ? '$99.00' : '$999.00'}
+                  {planConfig.displayPrice}
                 </span>
               </div>
               <div className="flex justify-between items-center">
@@ -106,7 +109,7 @@ export default function OrderSummary({ isOpen, onClose, selectedPlan }: OrderSum
               <div className="flex justify-between items-center">
                 <span className="text-base font-semibold text-gray-900 select-none">Total</span>
                 <span className="text-base font-bold text-gray-900 select-none">
-                  {selectedPlan === 'monthly' ? '$99.00 USD' : '$999.00 USD'}
+                  {planConfig.displayPrice} USD
                 </span>
               </div>
             </div>
@@ -123,7 +126,7 @@ export default function OrderSummary({ isOpen, onClose, selectedPlan }: OrderSum
                 </span>
               </div>
               <p className="text-xs text-blue-600 mt-1 select-none">
-                You will be charged {selectedPlan === 'monthly' ? '$99.00' : '$999.00'} on this date.
+                You will be charged {planConfig.displayPrice} on this date.
               </p>
             </div>
           </div>

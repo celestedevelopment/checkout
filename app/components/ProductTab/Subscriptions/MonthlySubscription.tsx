@@ -1,11 +1,15 @@
 'use client';
 
+import { getPlanConfig } from '../../../utils/pricingConfig';
+
 interface MonthlySubscriptionProps {
   isSelected: boolean;
   onSelect: () => void;
 }
 
 export default function MonthlySubscription({ isSelected, onSelect }: MonthlySubscriptionProps) {
+  const planConfig = getPlanConfig('monthly');
+  
   return (
     <div 
       className={`mt-4 p-4 rounded-lg border-2 cursor-pointer transition-all duration-200 ${
@@ -26,11 +30,11 @@ export default function MonthlySubscription({ isSelected, onSelect }: MonthlySub
           )}
         </div>
         <div>
-          <span className="text-2xl font-bold text-gray-900">$99</span>
-          <span className="text-gray-600 text-sm ml-1">/month</span>
+          <span className="text-2xl font-bold text-gray-900">{planConfig.displayPrice}</span>
+          <span className="text-gray-600 text-sm ml-1">/{planConfig.period}</span>
         </div>
       </div>
-      <p className="text-gray-600 text-sm">Monthly subscription</p>
+      <p className="text-gray-600 text-sm">{planConfig.name}</p>
     </div>
   );
 }

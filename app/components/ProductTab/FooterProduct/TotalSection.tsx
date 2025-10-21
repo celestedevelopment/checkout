@@ -1,17 +1,21 @@
 'use client';
 
+import { getPlanConfig } from '../../../utils/pricingConfig';
+
 interface TotalSectionProps {
   selectedPlan: 'monthly' | 'yearly';
   onShowOrderDetails: () => void;
 }
 
 export default function TotalSection({ selectedPlan, onShowOrderDetails }: TotalSectionProps) {
+  const planConfig = getPlanConfig(selectedPlan);
+  
   return (
     <div className="mt-6 pt-4 border-t border-gray-200">
       <div className="flex justify-between items-center mb-2">
         <span className="text-gray-900 font-medium select-none">Total due today</span>
         <span className="text-xl font-bold text-gray-900 select-none">
-          {selectedPlan === 'monthly' ? '$99 USD' : '$999 USD'}
+          {planConfig.displayPrice} USD
         </span>
       </div>
       <a 
