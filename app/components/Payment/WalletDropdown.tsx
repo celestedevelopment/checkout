@@ -58,13 +58,14 @@ export default function WalletDropdown({ selectedWallet, onWalletSelect, isDisab
             <img 
               src={selectedOption.icon}
               alt={selectedOption.name}
-              className="w-6 h-6"
+              className="w-6 h-6 select-none"
+              draggable={false}
             />
             <div className="flex items-center gap-1">
-              <span className="font-medium text-[#0f172a]" style={{fontFamily: 'Inter', fontWeight: 500}}>
+              <span className="font-medium text-[#0f172a] select-none" style={{fontFamily: 'Inter', fontWeight: 500}}>
                 {selectedOption.name}
               </span>
-              <span className="text-[#999999]" style={{fontFamily: 'Inter', fontWeight: 400}}>
+              <span className="text-[#999999] select-none" style={{fontFamily: 'Inter', fontWeight: 400}}>
                 {selectedOption.network}
               </span>
             </div>
@@ -103,13 +104,14 @@ export default function WalletDropdown({ selectedWallet, onWalletSelect, isDisab
                   <img 
                     src={option.icon} 
                     alt={option.name} 
-                    className="w-6 h-6"
+                    className="w-6 h-6 select-none"
+                    draggable={false}
                   />
                   <div className="flex items-center gap-1">
-                    <span className="font-medium text-[#0f172a]" style={{fontFamily: 'Inter', fontWeight: 500}}>
+                    <span className="font-medium text-[#0f172a] select-none" style={{fontFamily: 'Inter', fontWeight: 500}}>
                       {option.name}
                     </span>
-                    <span className="text-[#999999]" style={{fontFamily: 'Inter', fontWeight: 400}}>
+                    <span className="text-[#999999] select-none" style={{fontFamily: 'Inter', fontWeight: 400}}>
                       {option.network}
                     </span>
                   </div>

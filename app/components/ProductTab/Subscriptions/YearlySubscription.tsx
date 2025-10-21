@@ -30,14 +30,14 @@ export default function YearlySubscription({ isSelected, onSelect }: YearlySubsc
           )}
         </div>
         <div>
-          <span className="text-2xl font-bold text-gray-900">{planConfig.displayPrice}</span>
-          <span className="text-gray-600 text-sm ml-1">/{planConfig.period}</span>
+          <span className="text-2xl font-bold text-gray-900 select-none">{planConfig.displayPrice}</span>
+          <span className="text-gray-600 text-sm ml-1 select-none">/{planConfig.period}</span>
         </div>
       </div>
       <div className="flex items-center justify-between">
-        <p className="text-gray-600 text-sm">{planConfig.name}</p>
+        <p className="text-gray-600 text-sm select-none">{planConfig.name}</p>
         {planConfig.savings && (
-          <span className="bg-green-100 text-green-800 text-xs font-medium px-2 py-1 rounded">
+          <span className="bg-green-100 text-green-800 text-xs font-medium px-2 py-1 rounded select-none">
             {planConfig.savings.displayText}
           </span>
         )}

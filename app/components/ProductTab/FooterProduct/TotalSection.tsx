@@ -20,14 +20,14 @@ export default function TotalSection({ selectedPlan, onShowOrderDetails }: Total
       </div>
       <a 
         href="#" 
-        className="text-black hover:text-gray-800 text-sm flex items-center gap-1"
+        className="text-black hover:text-gray-800 text-sm flex items-center gap-1 select-none"
         onClick={(e) => {
           e.preventDefault();
           onShowOrderDetails();
         }}
       >
         View order details
-        <span className="text-xs">→</span>
+        <span className="text-xs select-none">→</span>
       </a>
       <p className="text-gray-500 text-xs mt-2 select-none">
         Next payment: {selectedPlan === 'monthly' ? 'Nov 21, 2025' : 'Nov 21, 2026'}

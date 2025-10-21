@@ -14,13 +14,13 @@ export default function FooterContactMerchant({ variant = 'default', className =
         href="https://t.me/example" 
         target="_blank" 
         rel="noopener noreferrer"
-        className="hover:underline cursor-pointer"
+        className="hover:underline cursor-pointer select-none"
       >
         Telegram
       </a>
       <a 
         href="mailto:info@azienda.com"
-        className="hover:underline cursor-pointer"
+        className="hover:underline cursor-pointer select-none"
       >
         Contact
       </a>
@@ -28,7 +28,7 @@ export default function FooterContactMerchant({ variant = 'default', className =
         href="https://example-store.com/shop" 
         target="_blank" 
         rel="noopener noreferrer"
-        className="hover:underline cursor-pointer"
+        className="hover:underline cursor-pointer select-none"
       >
         Store
       </a>

@@ -13,7 +13,7 @@ export default function UserProfile({ customerName, email, onSignOut }: UserProf
       <div className="flex items-center gap-3 p-3 bg-white border border-gray-200 rounded-lg">
         {/* Avatar con iniziali */}
         <div className="w-12 h-12 bg-green-600 rounded-full flex items-center justify-center">
-          <span className="text-white font-semibold text-lg">
+          <span className="text-white font-semibold text-lg select-none">
             {customerName.split(' ').map(name => name.charAt(0)).join('')}
           </span>
         </div>
@@ -27,7 +27,7 @@ export default function UserProfile({ customerName, email, onSignOut }: UserProf
         {/* Pulsante Sign out */}
         <button 
           onClick={onSignOut}
-          className="px-3 py-1 text-sm text-gray-600 hover:text-gray-800 border border-gray-300 rounded-md hover:bg-gray-50 transition-colors"
+          className="px-3 py-1 text-sm text-gray-600 hover:text-gray-800 border border-gray-300 rounded-md hover:bg-gray-50 transition-colors select-none"
         >
           Sign out
         </button>

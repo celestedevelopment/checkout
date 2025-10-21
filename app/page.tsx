@@ -180,7 +180,7 @@ export default function Home() {
                 {/* Payment Method Box - Always visible but conditionally interactive */}
                 <div className="mt-4 p-4 bg-white rounded-lg">
                   <div className="flex items-center gap-2 mb-4">
-                    <h3 className="text-lg font-semibold text-gray-900">Payment method</h3>
+                    <h3 className="text-lg font-semibold text-gray-900 select-none">Payment method</h3>
                   </div>
                   
                   {/* Wallet Selection Dropdown */}
@@ -194,8 +194,8 @@ export default function Home() {
                   {!isEmailVerified && (
                     <div className="mt-3 p-2 bg-blue-50 border border-blue-200 rounded-md">
                       <div className="flex items-center gap-2">
-                        <span className="text-blue-500 text-sm">ℹ</span>
-                        <span className="text-blue-700 text-xs font-medium">Complete email verification to enable payment options</span>
+                        <span className="text-blue-500 text-sm select-none">ℹ</span>
+                        <span className="text-blue-700 text-xs font-medium select-none">Complete email verification to enable payment options</span>
                       </div>
                     </div>
                   )}
