@@ -1,6 +1,7 @@
 'use client';
 
 import Image from "next/image";
+import { useState } from "react";
 import { useTabVisibility } from "./hooks/useTabVisibility";
 import { useUserSession } from "./hooks/useUserSession";
 import { useEmailVerification } from "./hooks/useEmailVerification";
@@ -66,6 +67,14 @@ export default function Home() {
 
   // Hook per bloccare lo scroll del body quando il popup è aperto
   useBodyScrollLock(showOrderDetails);
+
+  // State per gestire la selezione del wallet
+  const [selectedWallet, setSelectedWallet] = useState('BTC');
+
+  // Handler per la selezione del wallet
+  const handleWalletSelect = (walletId: string) => {
+    setSelectedWallet(walletId);
+  };
 
   return (
     <div className="flex flex-col md:flex-row h-screen">
@@ -157,7 +166,7 @@ export default function Home() {
                       resendCooldown={resendCooldown}
                       isResending={isResending}
                       resendSuccess={resendSuccess}
-                      validateCode={validateCode}
+                      validateCode={(code) => validateCode(code, () => createSession(email, customerName))}
                     />
                   )
                 ) : (
@@ -175,7 +184,11 @@ export default function Home() {
                   </div>
                   
                   {/* Wallet Selection Dropdown */}
-                  <WalletDropdown isEmailVerified={isEmailVerified} />
+                  <WalletDropdown 
+                    selectedWallet={selectedWallet}
+                    onWalletSelect={handleWalletSelect}
+                    isDisabled={!isEmailVerified} 
+                  />
                   
                   {/* Message when not verified */}
                   {!isEmailVerified && (

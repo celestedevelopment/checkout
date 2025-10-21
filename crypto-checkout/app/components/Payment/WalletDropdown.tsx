@@ -23,13 +23,13 @@ const walletOptions = [
     id: 'TRX',
     name: 'TRX',
     network: 'Tron',
-    icon: '/CryptoIcon/Other/12114250.png'
+    icon: '/CryptoIcon/Other/trx.svg'
   },
   {
     id: 'USDC',
     name: 'USDC',
     network: 'Ethereum',
-    icon: '/CryptoIcon/USDC/Circle_USDC_Logo.png'
+    icon: '/CryptoIcon/USDC/USDC.svg'
   }
 ];
 
