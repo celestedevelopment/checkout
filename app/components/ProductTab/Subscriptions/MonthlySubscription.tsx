@@ -1,6 +1,7 @@
 'use client';
 
 import { getPlanConfig } from '../../../utils/pricingConfig';
+import { usePrice } from '../../../hooks/useCurrency';
 
 interface MonthlySubscriptionProps {
   isSelected: boolean;
@@ -9,6 +10,7 @@ interface MonthlySubscriptionProps {
 
 export default function MonthlySubscription({ isSelected, onSelect }: MonthlySubscriptionProps) {
   const planConfig = getPlanConfig('monthly');
+  const { convertedPrice, isLoading } = usePrice(planConfig.price);
   
   return (
     <div 
@@ -30,7 +32,9 @@ export default function MonthlySubscription({ isSelected, onSelect }: MonthlySub
           )}
         </div>
         <div>
-          <span className="text-2xl font-bold text-gray-900 select-none">{planConfig.displayPrice}</span>
+          <span className="text-2xl font-bold text-gray-900 select-none">
+            {isLoading ? planConfig.displayPrice : convertedPrice}
+          </span>
           <span className="text-gray-600 text-sm ml-1 select-none">/{planConfig.period}</span>
         </div>
       </div>

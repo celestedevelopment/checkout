@@ -1,5 +1,8 @@
+'use client';
+
 import Image from 'next/image';
 import dynamic from 'next/dynamic';
+import { useT } from '@/app/hooks/useTranslation';
 
 const FooterContactMerchant = dynamic(() => import('./FooterContactMerchant'), {
   ssr: false,
@@ -12,6 +15,7 @@ interface FooterDefaultProps {
 }
 
 export default function FooterDefault({ variant = 'default', className = '' }: FooterDefaultProps) {
+  const t = useT();
   const isPopup = variant === 'popup';
   const logoWidth = isPopup ? 60 : 80;
   const logoHeight = isPopup ? 18 : 24;
@@ -24,7 +28,9 @@ export default function FooterDefault({ variant = 'default', className = '' }: F
   return (
     <div className={`${containerClass} ${className}`}>
       <div className="flex items-center gap-2">
-        <span className={`text-black ${textSize} font-normal select-none`}>powered by</span>
+        <span className={`text-black ${textSize} font-normal select-none`}>
+          {t('poweredBy', 'powered by')}
+        </span>
         <a 
           href="https://acctual.com" 
           target="_blank" 

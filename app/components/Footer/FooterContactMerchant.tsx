@@ -1,9 +1,14 @@
+'use client';
+
+import { useT } from '@/app/hooks/useTranslation';
+
 interface FooterContactMerchantProps {
   variant?: 'default' | 'popup';
   className?: string;
 }
 
 export default function FooterContactMerchant({ variant = 'default', className = '' }: FooterContactMerchantProps) {
+  const t = useT();
   const isPopup = variant === 'popup';
   const textSize = isPopup ? 'text-xs' : 'text-sm';
   const gapSize = isPopup ? 'gap-3' : 'gap-4';
@@ -16,13 +21,13 @@ export default function FooterContactMerchant({ variant = 'default', className =
         rel="noopener noreferrer"
         className="hover:underline cursor-pointer select-none"
       >
-        Telegram
+        {t('telegram', 'Telegram')}
       </a>
       <a 
         href="mailto:info@azienda.com"
         className="hover:underline cursor-pointer select-none"
       >
-        Contact
+        {t('contact', 'Contact')}
       </a>
       <a 
         href="https://example-store.com/shop" 
@@ -30,7 +35,7 @@ export default function FooterContactMerchant({ variant = 'default', className =
         rel="noopener noreferrer"
         className="hover:underline cursor-pointer select-none"
       >
-        Store
+        {t('store', 'Store')}
       </a>
     </div>
   );

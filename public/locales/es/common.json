@@ -1,0 +1,20 @@
+{
+  "poweredBy": "impulsado por",
+  "telegram": "Telegram",
+  "contact": "Contacto",
+  "store": "Tienda",
+  "paymentMethod": "Método de pago",
+  "emailVerificationRequired": "Completa la verificación de email para habilitar las opciones de pago",
+  "signOut": "Cerrar sesión",
+  "enterVerificationCode": "Ingresa tu código de verificación",
+  "verificationCodeInstructions": "Ingresa el código enviado a",
+  "toSecurelyAuthenticate": "para autenticar de forma segura tu cuenta",
+  "verificationCodeInvalid": "El código de verificación no es válido",
+  "verificationCodeResent": "El código de verificación ha sido reenviado a tu email",
+  "didntReceiveCode": "¿No recibiste el código",
+  "sending": "Enviando...",
+  "resendCodeCooldown": "Reenviar código ({0}s)",
+  "resendCode": "Reenviar código",
+  "emailAddress": "Dirección de email",
+  "yourAccount": "Tu cuenta"
+}

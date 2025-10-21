@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useT } from '../../../hooks/useTranslation';
 
 interface ProductDescriptionProps {
   variant?: 'default' | 'popup';
@@ -7,6 +8,7 @@ interface ProductDescriptionProps {
 
 export default function ProductDescription({ variant = 'default', className = '' }: ProductDescriptionProps) {
   const [isDescriptionExpanded, setIsDescriptionExpanded] = useState(false);
+  const t = useT();
   
   const isPopup = variant === 'popup';
   
@@ -18,18 +20,24 @@ export default function ProductDescription({ variant = 'default', className = ''
   // Configurazione stili basata sulla variante
   const textClass = isPopup 
     ? 'text-xs text-gray-600 mt-1 select-none' 
-    : 'text-gray-600 text-sm mb-3 leading-relaxed select-none';
+    : 'text-sm text-gray-600 mb-3 select-none';
+  
+  const buttonClass = isPopup 
+    ? 'text-black hover:text-gray-800 text-xs font-medium bg-transparent border-none cursor-pointer mt-1' 
+    : 'text-black hover:text-gray-800 text-sm font-medium bg-transparent border-none cursor-pointer';
 
-  // Per la variante popup, mostra solo la descrizione statica
+  // Se è popup, mostra solo la descrizione breve senza pulsante
   if (isPopup) {
     return (
-      <p className={`${textClass} ${className}`}>
-        {popupDescription}
-      </p>
+      <div className={className}>
+        <p className={textClass}>
+          {popupDescription}
+        </p>
+      </div>
     );
   }
 
-  // Per la variante default, mostra la descrizione con funzionalità di espansione
+  // Versione normale con espansione
   return (
     <div className={className}>
       <p className={textClass}>
@@ -39,7 +47,7 @@ export default function ProductDescription({ variant = 'default', className = ''
         onClick={() => setIsDescriptionExpanded(!isDescriptionExpanded)}
         className="text-black hover:text-gray-800 text-sm font-medium bg-transparent border-none cursor-pointer"
       >
-        {isDescriptionExpanded ? 'See less' : 'See more'}
+        {isDescriptionExpanded ? t('seeLess', 'See less') : t('seeMore', 'See more')}
       </button>
     </div>
   );

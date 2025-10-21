@@ -5,6 +5,8 @@ import ProductTitle from "../components/ProductTab/Product/ProductTitle";
 import ProductDescription from "../components/ProductTab/Product/ProductDescription";
 import FooterDefault from "../components/Footer/FooterDefault";
 import { getPlanConfig } from "../utils/pricingConfig";
+import { usePrice } from "../hooks/useCurrency";
+import { useT } from "../hooks/useTranslation";
 
 interface OrderSummaryProps {
   isOpen: boolean;
@@ -16,6 +18,8 @@ export default function OrderSummary({ isOpen, onClose, selectedPlan }: OrderSum
   if (!isOpen) return null;
 
   const planConfig = getPlanConfig(selectedPlan);
+  const { convertedPrice, isLoading } = usePrice(planConfig.price);
+  const t = useT();
 
   return (
     <div className="fixed inset-0 z-50">
@@ -45,11 +49,11 @@ export default function OrderSummary({ isOpen, onClose, selectedPlan }: OrderSum
           {/* Logo e nome store in alto - stesso della sezione principale */}
           <StoreHeader size="small" className="mb-6" />
 
-          <h2 className="text-xl font-bold text-gray-900 mb-4 select-none">Order Summary</h2>
+          <h2 className="text-xl font-bold text-gray-900 mb-4 select-none">{t('orderSummary', 'Order Summary')}</h2>
 
           {/* Product Details */}
           <div className="mb-6">
-            <h3 className="text-base font-semibold text-gray-900 mb-3 select-none">Product</h3>
+            <h3 className="text-base font-semibold text-gray-900 mb-3 select-none">{t('product', 'Product')}</h3>
             <div className="bg-white rounded-lg p-3 border border-gray-200">
               <ProductTitle variant="popup" />
               <ProductDescription variant="popup" />
@@ -58,29 +62,29 @@ export default function OrderSummary({ isOpen, onClose, selectedPlan }: OrderSum
 
           {/* Subscription Details */}
           <div className="mb-6">
-            <h3 className="text-base font-semibold text-gray-900 mb-3 select-none">Subscription</h3>
+            <h3 className="text-base font-semibold text-gray-900 mb-3 select-none">{t('subscription', 'Subscription')}</h3>
             <div className="space-y-2">
               <div className="flex justify-between items-center">
-                <span className="text-sm text-gray-700 select-none">Plan</span>
+                <span className="text-sm text-gray-700 select-none">{t('plan', 'Plan')}</span>
                 <span className="text-sm font-medium text-gray-900 select-none">
                   {planConfig.name}
                 </span>
               </div>
               <div className="flex justify-between items-center">
-                <span className="text-sm text-gray-700 select-none">Price</span>
+                <span className="text-sm text-gray-700 select-none">{t('price', 'Price')}</span>
                 <span className="text-sm font-medium text-gray-900 select-none">
-                  {planConfig.displayPrice}/{planConfig.period}
+                  {isLoading ? planConfig.displayPrice : convertedPrice}/{planConfig.period}
                 </span>
               </div>
               <div className="flex justify-between items-center">
-                <span className="text-sm text-gray-700 select-none">Billing Cycle</span>
+                <span className="text-sm text-gray-700 select-none">{t('billingCycle', 'Billing Cycle')}</span>
                 <span className="text-sm font-medium text-gray-900 select-none">
-                  {selectedPlan === 'monthly' ? 'Monthly' : 'Annual'}
+                  {selectedPlan === 'monthly' ? t('monthly', 'Monthly') : t('annual', 'Annual')}
                 </span>
               </div>
               {planConfig.savings && (
                 <div className="flex justify-between items-center">
-                  <span className="text-sm text-gray-700 select-none">Savings</span>
+                  <span className="text-sm text-gray-700 select-none">{t('savings', 'Savings')}</span>
                   <span className="text-sm font-medium text-green-600 select-none">{planConfig.savings.displayText}</span>
                 </div>
               )}
@@ -89,27 +93,27 @@ export default function OrderSummary({ isOpen, onClose, selectedPlan }: OrderSum
 
           {/* Payment Details */}
           <div className="mb-6">
-            <h3 className="text-base font-semibold text-gray-900 mb-3 select-none">Payment Details</h3>
+            <h3 className="text-base font-semibold text-gray-900 mb-3 select-none">{t('paymentDetails', 'Payment Details')}</h3>
             <div className="space-y-2">
               <div className="flex justify-between items-center">
-                <span className="text-sm text-gray-700 select-none">Subtotal</span>
+                <span className="text-sm text-gray-700 select-none">{t('subtotal', 'Subtotal')}</span>
                 <span className="text-sm font-medium text-gray-900 select-none">
-                  {planConfig.displayPrice}
+                  {isLoading ? planConfig.displayPrice : convertedPrice}
                 </span>
               </div>
               <div className="flex justify-between items-center">
-                <span className="text-sm text-gray-700 select-none">Tax</span>
+                <span className="text-sm text-gray-700 select-none">{t('tax', 'Tax')}</span>
                 <span className="text-sm font-medium text-gray-900 select-none">$0.00</span>
               </div>
               <div className="flex justify-between items-center">
-                <span className="text-sm text-gray-700 select-none">Discount</span>
+                <span className="text-sm text-gray-700 select-none">{t('discount', 'Discount')}</span>
                 <span className="text-sm font-medium text-gray-900 select-none">$0.00</span>
               </div>
               <hr className="my-2" />
               <div className="flex justify-between items-center">
-                <span className="text-base font-semibold text-gray-900 select-none">Total</span>
+                <span className="text-base font-semibold text-gray-900 select-none">{t('total', 'Total')}</span>
                 <span className="text-base font-bold text-gray-900 select-none">
-                  {planConfig.displayPrice} USD
+                  {isLoading ? `${planConfig.displayPrice} USD` : convertedPrice}
                 </span>
               </div>
             </div>
@@ -117,16 +121,16 @@ export default function OrderSummary({ isOpen, onClose, selectedPlan }: OrderSum
 
           {/* Next Payment */}
           <div className="mb-6">
-            <h3 className="text-base font-semibold text-gray-900 mb-3 select-none">Next Payment</h3>
+            <h3 className="text-base font-semibold text-gray-900 mb-3 select-none">{t('nextPayment', 'Next Payment')}</h3>
             <div className="bg-blue-50 rounded-lg p-3">
               <div className="flex justify-between items-center">
-                <span className="text-sm text-blue-700 select-none">Next billing date</span>
+                <span className="text-sm text-blue-700 select-none">{t('nextBillingDate', 'Next billing date')}</span>
                 <span className="text-sm font-medium text-blue-900 select-none">
                   {selectedPlan === 'monthly' ? 'Nov 21, 2025' : 'Nov 21, 2026'}
                 </span>
               </div>
               <p className="text-xs text-blue-600 mt-1 select-none">
-                You will be charged {planConfig.displayPrice} on this date.
+                {t('youWillBeCharged', `You will be charged ${isLoading ? planConfig.displayPrice : convertedPrice} on this date.`)}
               </p>
             </div>
           </div>
@@ -134,10 +138,10 @@ export default function OrderSummary({ isOpen, onClose, selectedPlan }: OrderSum
           {/* Terms */}
           <div className="text-xs text-gray-500 mb-4 select-none">
             <p className="mb-1">
-              By completing this purchase, you agree to our Terms of Service and Privacy Policy.
+              {t('termsAndPrivacy', 'By completing this purchase, you agree to our Terms of Service and Privacy Policy.')}
             </p>
             <p>
-              You can cancel your subscription at any time from your account settings.
+              {t('cancelSubscription', 'You can cancel your subscription at any time from your account settings.')}
             </p>
           </div>
 

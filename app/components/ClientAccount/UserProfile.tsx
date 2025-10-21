@@ -1,5 +1,7 @@
 'use client';
 
+import { useT } from '@/app/hooks/useTranslation';
+
 interface UserProfileProps {
   customerName: string;
   email: string;
@@ -7,6 +9,8 @@ interface UserProfileProps {
 }
 
 export default function UserProfile({ customerName, email, onSignOut }: UserProfileProps) {
+  const t = useT();
+  
   return (
     <div className="mb-4">
       {/* Profilo utente verificato */}
@@ -29,7 +33,7 @@ export default function UserProfile({ customerName, email, onSignOut }: UserProf
           onClick={onSignOut}
           className="px-3 py-1 text-sm text-gray-600 hover:text-gray-800 border border-gray-300 rounded-md hover:bg-gray-50 transition-colors select-none"
         >
-          Sign out
+          {t('signOut', 'Sign out')}
         </button>
       </div>
     </div>

@@ -7,6 +7,7 @@ import { useUserSession } from "./hooks/useUserSession";
 import { useEmailVerification } from "./hooks/useEmailVerification";
 import { useBodyScrollLock } from "./hooks/useBodyScrollLock";
 import { usePlanSelection } from "./hooks/usePlanSelection";
+import { useT } from "./hooks/useTranslation";
 import { getCheckoutTabConfig } from "./functions/tabVisibilityConfig";
 import { createSignOutHandler } from "./functions/authHandlers";
 import WalletDropdown from "./components/Payment/WalletDropdown";
@@ -24,6 +25,9 @@ import VerificationCode from "./components/ClientAccount/VerificationCode";
 import UserProfile from "./components/ClientAccount/UserProfile";
 
 export default function Home() {
+  // Translation hook
+  const t = useT();
+  
   // Implementa l'effetto "Attention Grabber" per attirare l'utente quando cambia tab e il reminder del checkout dopo 1 minuto quando è sulla pagina
   const { isVisible, isBlinking, showCheckoutReminder } = useTabVisibility(getCheckoutTabConfig());
   
@@ -180,7 +184,9 @@ export default function Home() {
                 {/* Payment Method Box - Always visible but conditionally interactive */}
                 <div className="mt-4 p-4 bg-white rounded-lg">
                   <div className="flex items-center gap-2 mb-4">
-                    <h3 className="text-lg font-semibold text-gray-900 select-none">Payment method</h3>
+                    <h3 className="text-lg font-semibold text-gray-900 select-none">
+                      {t('paymentMethod', 'Payment method')}
+                    </h3>
                   </div>
                   
                   {/* Wallet Selection Dropdown */}
@@ -195,7 +201,9 @@ export default function Home() {
                     <div className="mt-3 p-2 bg-blue-50 border border-blue-200 rounded-md">
                       <div className="flex items-center gap-2">
                         <span className="text-blue-500 text-sm select-none">ℹ</span>
-                        <span className="text-blue-700 text-xs font-medium select-none">Complete email verification to enable payment options</span>
+                        <span className="text-blue-700 text-xs font-medium select-none">
+                          {t('emailVerificationRequired', 'Complete email verification to enable payment options')}
+                        </span>
                       </div>
                     </div>
                   )}
