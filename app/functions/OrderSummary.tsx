@@ -15,11 +15,11 @@ interface OrderSummaryProps {
 }
 
 export default function OrderSummary({ isOpen, onClose, selectedPlan }: OrderSummaryProps) {
-  if (!isOpen) return null;
-
   const planConfig = getPlanConfig(selectedPlan);
   const { convertedPrice, isLoading } = usePrice(planConfig.price);
   const t = useT();
+
+  if (!isOpen) return null;
 
   return (
     <div className="fixed inset-0 z-50">

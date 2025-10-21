@@ -65,7 +65,7 @@ export const useEmailVerification = (): UseEmailVerificationReturn => {
         });
       }, 1000);
       
-    } catch (error) {
+    } catch {
       setCodeError('Errore nell\'invio del codice. Riprova.');
     } finally {
       setIsResending(false);

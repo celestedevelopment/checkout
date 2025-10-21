@@ -88,7 +88,7 @@ export function formatCurrency(amount: number, currency: { code: string; symbol:
       minimumFractionDigits: 2,
       maximumFractionDigits: 2,
     }).format(amount);
-  } catch (error) {
+  } catch {
     // Fallback to manual formatting if currency code is not supported
     return `${currency.symbol}${amount.toFixed(2)}`;
   }

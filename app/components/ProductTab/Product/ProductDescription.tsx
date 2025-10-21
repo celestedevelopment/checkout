@@ -21,10 +21,6 @@ export default function ProductDescription({ variant = 'default', className = ''
   const textClass = isPopup 
     ? 'text-xs text-gray-600 mt-1 select-none' 
     : 'text-sm text-gray-600 mb-3 select-none';
-  
-  const buttonClass = isPopup 
-    ? 'text-black hover:text-gray-800 text-xs font-medium bg-transparent border-none cursor-pointer mt-1' 
-    : 'text-black hover:text-gray-800 text-sm font-medium bg-transparent border-none cursor-pointer';
 
   // Se è popup, mostra solo la descrizione breve senza pulsante
   if (isPopup) {

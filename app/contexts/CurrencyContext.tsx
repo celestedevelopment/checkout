@@ -10,14 +10,6 @@ interface CurrencyInfo {
   name: string;
 }
 
-// Exchange rate information
-interface ExchangeRate {
-  from: string;
-  to: string;
-  rate: number;
-  timestamp: number;
-}
-
 interface CurrencyContextType {
   currency: CurrencyInfo;
   baseCurrency: CurrencyInfo; // Usually USD for pricing

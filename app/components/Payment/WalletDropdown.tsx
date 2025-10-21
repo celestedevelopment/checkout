@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import Image from 'next/image';
 
 interface WalletDropdownProps {
   selectedWallet: string;
@@ -55,9 +56,11 @@ export default function WalletDropdown({ selectedWallet, onWalletSelect, isDisab
       >
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <img 
+            <Image 
               src={selectedOption.icon}
               alt={selectedOption.name}
+              width={24}
+              height={24}
               className="w-6 h-6 select-none"
               draggable={false}
             />
@@ -101,9 +104,11 @@ export default function WalletDropdown({ selectedWallet, onWalletSelect, isDisab
             >
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
-                  <img 
+                  <Image 
                     src={option.icon} 
                     alt={option.name} 
+                    width={24}
+                    height={24}
                     className="w-6 h-6 select-none"
                     draggable={false}
                   />

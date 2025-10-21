@@ -108,7 +108,7 @@ export async function detectUserLanguage(acceptLanguage?: string): Promise<strin
     // First try IP-based detection
     const geoData = await getGeolocationFromIP();
     return geoData.language;
-  } catch (error) {
+  } catch {
     console.warn('IP-based language detection failed, falling back to browser headers');
     // Fallback to browser headers
     return getLanguageFromHeaders(acceptLanguage);

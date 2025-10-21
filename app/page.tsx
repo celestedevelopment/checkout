@@ -29,16 +29,14 @@ export default function Home() {
   const t = useT();
   
   // Implementa l'effetto "Attention Grabber" per attirare l'utente quando cambia tab e il reminder del checkout dopo 1 minuto quando è sulla pagina
-  const { isVisible, isBlinking, showCheckoutReminder } = useTabVisibility(getCheckoutTabConfig());
+  useTabVisibility(getCheckoutTabConfig());
   
   // Hook personalizzati per gestire sessione e verifica email
   const { 
     isEmailVerified, 
     email, 
     customerName, 
-    sessionExpiry,
     setEmail,
-    setCustomerName,
     createSession,
     clearSession 
   } = useUserSession();
@@ -52,7 +50,6 @@ export default function Home() {
     resendCooldown,
     resendSuccess,
     setShowVerification,
-    setVerificationError,
     setVerificationCode,
     handleResendCode,
     validateCode,
