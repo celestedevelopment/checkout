@@ -40,7 +40,7 @@ export const pricingConfig: PricingConfig = {
     currency: 'USD',
     period: 'year',
     displayPrice: '$189,99',
-    fullDisplayPrice: '$999.00 USD',
+    fullDisplayPrice: '$189.99 USD',
     savings: {
       percentage: 15,
       displayText: 'Save 15%'
