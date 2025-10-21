@@ -34,6 +34,10 @@ export default function Home() {
   const [isResending, setIsResending] = useState(false);
   const [resendCooldown, setResendCooldown] = useState(0);
   const [resendSuccess, setResendSuccess] = useState(false);
+  
+  // Stati per la selezione wallet
+  const [selectedWallet, setSelectedWallet] = useState('BTC');
+  const [isWalletDropdownOpen, setIsWalletDropdownOpen] = useState(false);
 
   // Carica i dati della sessione dal localStorage al mount del componente
   useEffect(() => {
@@ -568,37 +572,245 @@ export default function Home() {
                 {/* Payment Method Box - Always visible but conditionally interactive */}
                 <div className="mt-4 p-4 bg-white rounded-lg">
                   <div className="flex items-center gap-2 mb-4">
-                    <h3 className="text-lg font-semibold text-gray-900">Payment Method</h3>
+                    <h3 className="text-lg font-semibold text-gray-900">Payment method</h3>
                   </div>
                   
-                  {/* Wallet Transfer Option */}
-                  <div className={`p-3 border border-gray-200 rounded-lg transition-colors ${
-                    isEmailVerified 
-                      ? 'hover:bg-gray-50 cursor-pointer' 
-                      : 'bg-gray-100 cursor-not-allowed opacity-60'
-                  }`}>
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-3">
-                        <div className="w-6 h-6 flex items-center justify-center">
-                          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M12 2L13.09 8.26L19 7L17.74 13.26L24 12L17.74 10.74L19 17L13.09 15.74L12 22L10.91 15.74L5 17L6.26 10.74L0 12L6.26 13.26L5 7L10.91 8.26L12 2Z" fill="currentColor"/>
+                  {/* Wallet Selection Dropdown */}
+                  <div className="relative">
+                    <div 
+                      className={`p-3 border border-gray-200 rounded-lg transition-colors cursor-pointer ${
+                        isEmailVerified 
+                          ? 'hover:bg-gray-50' 
+                          : 'bg-gray-100 cursor-not-allowed opacity-60'
+                      }`}
+                      onClick={() => isEmailVerified && setIsWalletDropdownOpen(!isWalletDropdownOpen)}
+                    >
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-3">
+                          {/* Dynamic Icon based on selected wallet */}
+                          <img 
+                            src={
+                              selectedWallet === 'BTC' ? "/CryptoIcon/Bitcoin.svg.png" : 
+                              selectedWallet === 'USDT-TRC20' ? "/CryptoIcon/USDT_Logo.png" :
+                              selectedWallet === 'TRX' ? "/CryptoIcon/12114250.png" :
+                              "/CryptoIcon/Circle_USDC_Logo.svg.png"
+                            }
+                            alt={
+                              selectedWallet === 'BTC' ? "Bitcoin" : 
+                              selectedWallet === 'USDT-TRC20' ? "USDT Tron" :
+                              selectedWallet === 'TRX' ? "TRX Tron" :
+                              "USDC Ethereum"
+                            }
+                            className="w-6 h-6"
+                          />
+                          <div className="flex items-center gap-1">
+                            <span className="font-medium text-[#0f172a]" style={{fontFamily: 'Inter', fontWeight: 500}}>
+                              {
+                                selectedWallet === 'BTC' ? 'Bitcoin' : 
+                                selectedWallet === 'USDT-TRC20' ? 'USDT' :
+                                selectedWallet === 'TRX' ? 'TRX' :
+                                'USDC'
+                              }
+                            </span>
+                            <span className="text-[#999999]" style={{fontFamily: 'Inter', fontWeight: 400}}>
+                              {
+                                selectedWallet === 'BTC' ? 'BTC' : 
+                                selectedWallet === 'USDT-TRC20' ? 'Tron' :
+                                selectedWallet === 'TRX' ? 'Tron' :
+                                'Ethereum'
+                              }
+                            </span>
+                          </div>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          {/* Checkmark when selected */}
+                          <svg 
+                            width="16" 
+                            height="16" 
+                            viewBox="0 0 24 24" 
+                            fill="none" 
+                            xmlns="http://www.w3.org/2000/svg"
+                            className="text-black"
+                          >
+                            <path 
+                              d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z" 
+                              fill="currentColor"
+                            />
                           </svg>
-                        </div>
-                        <span className="font-medium text-gray-900">Wallet Transfer</span>
-                      </div>
-                      <div className="flex items-center gap-1">
-                        {/* Crypto icons */}
-                        <div className="w-6 h-6 bg-orange-500 rounded-full flex items-center justify-center">
-                          <span className="text-white text-xs font-bold">₿</span>
-                        </div>
-                        <div className="w-6 h-6 bg-blue-600 rounded-full flex items-center justify-center">
-                          <span className="text-white text-xs font-bold">Ξ</span>
-                        </div>
-                        <div className="w-6 h-6 bg-gray-400 rounded-full flex items-center justify-center">
-                          <span className="text-white text-xs font-bold">+</span>
+                          {/* Dropdown Arrow */}
+                          <svg 
+                            width="16" 
+                            height="16" 
+                            viewBox="0 0 24 24" 
+                            fill="none" 
+                            xmlns="http://www.w3.org/2000/svg"
+                            className={`transition-transform ${isWalletDropdownOpen ? 'rotate-180' : ''}`}
+                          >
+                            <path 
+                              d="M7 10l5 5 5-5z" 
+                              fill="currentColor"
+                            />
+                          </svg>
                         </div>
                       </div>
                     </div>
+                    
+                    {/* Dropdown Menu */}
+                     {isWalletDropdownOpen && isEmailVerified && (
+                       <div className="absolute top-full left-0 right-0 mt-1 bg-white border border-gray-200 rounded-lg shadow-lg z-10">
+                         {/* Bitcoin Option */}
+                         <div 
+                           className={`p-3 hover:bg-gray-100 cursor-pointer border-b border-gray-100 last:border-b-0 first:rounded-t-lg last:rounded-b-lg select-none ${selectedWallet === 'BTC' ? 'bg-gray-100 m-2 rounded-lg' : ''}`}
+                           onClick={() => {
+                             setSelectedWallet('BTC');
+                             setIsWalletDropdownOpen(false);
+                           }}
+                         >
+                           <div className="flex items-center justify-between">
+                             <div className="flex items-center gap-3">
+                               <img 
+                                src="/CryptoIcon/Bitcoin.svg.png" 
+                                alt="Bitcoin" 
+                                className="w-6 h-6"
+                              />
+                               <div className="flex items-center gap-1">
+                                 <span className="font-medium text-[#0f172a]" style={{fontFamily: 'Inter', fontWeight: 500}}>Bitcoin</span>
+                                 <span className="text-[#999999]" style={{fontFamily: 'Inter', fontWeight: 400}}>BTC</span>
+                               </div>
+                             </div>
+                             {selectedWallet === 'BTC' && (
+                               <svg 
+                                 width="16" 
+                                 height="16" 
+                                 viewBox="0 0 24 24" 
+                                 fill="none" 
+                                 xmlns="http://www.w3.org/2000/svg"
+                                 className="text-black"
+                               >
+                                 <path 
+                                   d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z" 
+                                   fill="currentColor"
+                                 />
+                               </svg>
+                             )}
+                           </div>
+                         </div>
+                         
+                         {/* USDT Tron Option */}
+                         <div 
+                           className={`p-3 hover:bg-gray-100 cursor-pointer border-b border-gray-100 last:border-b-0 first:rounded-t-lg last:rounded-b-lg select-none ${selectedWallet === 'USDT-TRC20' ? 'bg-gray-100 m-2 rounded-lg' : ''}`}
+                           onClick={() => {
+                             setSelectedWallet('USDT-TRC20');
+                             setIsWalletDropdownOpen(false);
+                           }}
+                         >
+                           <div className="flex items-center justify-between">
+                             <div className="flex items-center gap-3">
+                               <img 
+                                src="/CryptoIcon/USDT_Logo.png" 
+                                alt="USDT Tron" 
+                                className="w-6 h-6"
+                              />
+                               <div className="flex items-center gap-1">
+                                 <span className="font-medium text-[#0f172a]" style={{fontFamily: 'Inter', fontWeight: 500}}>USDT</span>
+                                 <span className="text-[#999999]" style={{fontFamily: 'Inter', fontWeight: 400}}>Tron</span>
+                               </div>
+                             </div>
+                             {selectedWallet === 'USDT-TRC20' && (
+                               <svg 
+                                 width="16" 
+                                 height="16" 
+                                 viewBox="0 0 24 24" 
+                                 fill="none" 
+                                 xmlns="http://www.w3.org/2000/svg"
+                                 className="text-black"
+                               >
+                                 <path 
+                                   d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z" 
+                                   fill="currentColor"
+                                 />
+                               </svg>
+                             )}
+                           </div>
+                         </div>
+                         
+                         {/* TRX Tron Option */}
+                         <div 
+                           className={`p-3 hover:bg-gray-100 cursor-pointer border-b border-gray-100 last:border-b-0 first:rounded-t-lg last:rounded-b-lg select-none ${selectedWallet === 'TRX' ? 'bg-gray-100 m-2 rounded-lg' : ''}`}
+                           onClick={() => {
+                             setSelectedWallet('TRX');
+                             setIsWalletDropdownOpen(false);
+                           }}
+                         >
+                           <div className="flex items-center justify-between">
+                             <div className="flex items-center gap-3">
+                               <img 
+                                src="/CryptoIcon/12114250.png" 
+                                alt="TRX Tron" 
+                                className="w-6 h-6"
+                              />
+                               <div className="flex items-center gap-1">
+                                 <span className="font-medium text-[#0f172a]" style={{fontFamily: 'Inter', fontWeight: 500}}>TRX</span>
+                                 <span className="text-[#999999]" style={{fontFamily: 'Inter', fontWeight: 400}}>Tron</span>
+                               </div>
+                             </div>
+                             {selectedWallet === 'TRX' && (
+                               <svg 
+                                 width="16" 
+                                 height="16" 
+                                 viewBox="0 0 24 24" 
+                                 fill="none" 
+                                 xmlns="http://www.w3.org/2000/svg"
+                                 className="text-black"
+                               >
+                                 <path 
+                                   d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z" 
+                                   fill="currentColor"
+                                 />
+                               </svg>
+                             )}
+                           </div>
+                         </div>
+                         
+                         {/* USDC Ethereum Option */}
+                         <div 
+                           className={`p-3 hover:bg-gray-100 cursor-pointer border-b border-gray-100 last:border-b-0 first:rounded-t-lg last:rounded-b-lg select-none ${selectedWallet === 'USDC-ETH' ? 'bg-gray-100 m-2 rounded-lg' : ''}`}
+                           onClick={() => {
+                             setSelectedWallet('USDC-ETH');
+                             setIsWalletDropdownOpen(false);
+                           }}
+                         >
+                           <div className="flex items-center justify-between">
+                             <div className="flex items-center gap-3">
+                               <img 
+                                src="/CryptoIcon/Circle_USDC_Logo.svg.png" 
+                                alt="USDC Ethereum" 
+                                className="w-6 h-6"
+                              />
+                               <div className="flex items-center gap-1">
+                                 <span className="font-medium text-[#0f172a]" style={{fontFamily: 'Inter', fontWeight: 500}}>USDC</span>
+                                 <span className="text-[#999999]" style={{fontFamily: 'Inter', fontWeight: 400}}>Ethereum</span>
+                               </div>
+                             </div>
+                             {selectedWallet === 'USDC-ETH' && (
+                               <svg 
+                                 width="16" 
+                                 height="16" 
+                                 viewBox="0 0 24 24" 
+                                 fill="none" 
+                                 xmlns="http://www.w3.org/2000/svg"
+                                 className="text-black"
+                               >
+                                 <path 
+                                   d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z" 
+                                   fill="currentColor"
+                                 />
+                               </svg>
+                             )}
+                           </div>
+                         </div>
+                       </div>
+                     )}
                   </div>
                   
                   {/* Message when not verified */}
