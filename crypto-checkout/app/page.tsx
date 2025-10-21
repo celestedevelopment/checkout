@@ -19,6 +19,41 @@ export default function Home() {
   const [selectedPlan, setSelectedPlan] = useState('monthly'); // 'monthly' or 'yearly'
   const [showOrderDetails, setShowOrderDetails] = useState(false);
   const [isDescriptionExpanded, setIsDescriptionExpanded] = useState(false);
+  
+  // Stati per la verifica email
+  const [email, setEmail] = useState('');
+  const [showVerification, setShowVerification] = useState(false);
+  const [verificationError, setVerificationError] = useState(false);
+  const [verificationCode, setVerificationCode] = useState(['', '', '', '', '', '']);
+  const [isEmailVerified, setIsEmailVerified] = useState(false);
+  const [customerName, setCustomerName] = useState('Mattia Vizzi'); // Nome del cliente
+  const [sessionExpiry, setSessionExpiry] = useState(null); // Tempo di scadenza della sessione
+  
+  // Stati per gestione codice e errori
+  const [codeError, setCodeError] = useState('');
+  const [isResending, setIsResending] = useState(false);
+  const [resendCooldown, setResendCooldown] = useState(0);
+  const [resendSuccess, setResendSuccess] = useState(false);
+
+  // Carica i dati della sessione dal localStorage al mount del componente
+  useEffect(() => {
+    const savedSession = localStorage.getItem('userSession');
+    if (savedSession) {
+      const sessionData = JSON.parse(savedSession);
+      const now = new Date().getTime();
+      
+      // Controlla se la sessione è ancora valida
+      if (sessionData.expiry && now < sessionData.expiry) {
+        setIsEmailVerified(true);
+        setEmail(sessionData.email || '');
+        setCustomerName(sessionData.customerName || 'Mattia Vizzi');
+        setSessionExpiry(sessionData.expiry);
+      } else {
+        // Sessione scaduta, rimuovi dal localStorage
+        localStorage.removeItem('userSession');
+      }
+    }
+  }, []);
 
   // Versioni della descrizione del prodotto
   const shortDescription = "You're one step away from building a creative business you love...";
@@ -37,6 +72,107 @@ export default function Home() {
       document.body.style.overflow = 'unset';
     };
   }, [showOrderDetails]);
+
+  // Gestione del timer di sessione
+  useEffect(() => {
+    if (sessionExpiry) {
+      const checkSession = () => {
+        const now = new Date().getTime();
+        if (now >= sessionExpiry) {
+          // Sessione scaduta, effettua logout
+          setIsEmailVerified(false);
+          setSessionExpiry(null);
+          setEmail('');
+          setShowVerification(false);
+          setVerificationError(false);
+          setVerificationCode(['', '', '', '', '', '']);
+          // Rimuovi la sessione dal localStorage
+          localStorage.removeItem('userSession');
+        }
+      };
+
+      // Controlla ogni minuto
+      const interval = setInterval(checkSession, 60000);
+      
+      // Controlla immediatamente
+      checkSession();
+
+      return () => clearInterval(interval);
+    }
+  }, [sessionExpiry]);
+
+  // Funzione per simulare l'invio dell'email con il codice
+  const sendVerificationCode = async (emailAddress) => {
+    console.log(`Simulazione invio email a: ${emailAddress}`);
+    console.log('Codice di verifica: 000000');
+    // Qui andrà la logica vera per l'invio dell'email
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        resolve({ success: true });
+      }, 1000);
+    });
+  };
+
+  // Funzione per il resend del codice
+  const handleResendCode = async () => {
+    setIsResending(true);
+    setCodeError('');
+    setResendSuccess(false);
+    
+    try {
+      await sendVerificationCode(email);
+      setResendCooldown(30); // 30 secondi di cooldown
+      setResendSuccess(true);
+      
+      // Nascondi il messaggio di successo dopo 3 secondi
+      setTimeout(() => {
+        setResendSuccess(false);
+      }, 3000);
+      
+      // Countdown del cooldown
+      const countdown = setInterval(() => {
+        setResendCooldown(prev => {
+          if (prev <= 1) {
+            clearInterval(countdown);
+            return 0;
+          }
+          return prev - 1;
+        });
+      }, 1000);
+      
+    } catch (error) {
+      setCodeError('Errore nell\'invio del codice. Riprova.');
+    } finally {
+      setIsResending(false);
+    }
+  };
+
+  // Funzione per validare il codice
+  const validateCode = (code) => {
+    const fullCode = code.join('');
+    if (fullCode.length === 6) {
+      if (fullCode === '000000') {
+        setCodeError('');
+        setIsEmailVerified(true);
+        setShowVerification(false);
+        setVerificationError(false);
+        // Imposta la scadenza della sessione a 30 minuti da ora
+        const expiryTime = new Date().getTime() + (30 * 60 * 1000);
+        setSessionExpiry(expiryTime);
+        
+        // Salva la sessione nel localStorage
+        const sessionData = {
+          email: email,
+          customerName: customerName,
+          expiry: expiryTime
+        };
+        localStorage.setItem('userSession', JSON.stringify(sessionData));
+      } else {
+        setCodeError('Codice non valido. Riprova.');
+        setVerificationError(false); // Non usare verificationError per evitare doppie notifiche
+      }
+    }
+  };
   return (
     <div className="flex flex-col md:flex-row h-screen">
         {/* Sezione sinistra (top su mobile) - Store Info */}
@@ -206,8 +342,8 @@ export default function Home() {
 
       {/* Right side - Scrollable, white background (Desktop) / Bottom section (Mobile) */}
       <div className="w-full md:w-1/2 h-2/3 md:h-full bg-white overflow-y-auto">
-        <div className="p-4 md:p-8">
-          <main className="flex flex-col gap-[16px] md:gap-[32px] items-center sm:items-start">
+        <div className="p-4 md:p-8 md:flex md:flex-col md:justify-start md:pt-16">
+          <main className="flex flex-col gap-[16px] md:gap-[32px] items-start">
             
             {/* Mobile Content - Keep existing content for mobile */}
             <div className="md:hidden w-full">
@@ -233,13 +369,248 @@ export default function Home() {
               </ol>
             </div>
 
-            {/* Desktop Content - Empty for now, product description is on the left */}
-            <div className="hidden md:block w-full">
-              <div className="text-center py-16">
-                <h2 className="text-2xl font-bold text-gray-900 mb-4">Checkout Area</h2>
-                <p className="text-gray-600">
-                  This area can be used for payment methods, checkout forms, or other content.
-                </p>
+            {/* Desktop Content - Your account section */}
+            <div className="hidden md:block w-full max-w-md">
+              <div className="bg-white p-6">
+                <h2 className="text-2xl font-bold text-gray-900 mb-6 select-none">Your account</h2>
+                
+                {!isEmailVerified ? (
+                  !showVerification ? (
+                    <div className="mb-4">
+                      <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2 select-none">
+                        Email address
+                      </label>
+                      <input
+                        type="email"
+                        id="email"
+                        name="email"
+                        value={email}
+                        onChange={(e) => {
+                          setEmail(e.target.value);
+                          // Controlla automaticamente se l'email è valida con un dominio completo
+                          const emailValue = e.target.value;
+                          const emailRegex = /^[^\s@]+@[^\s@]+\.(com|it|org|net|edu|gov|co|uk|de|fr|es|ca|au|jp|br|in|ru|cn|mx|nl|se|no|dk|fi|pl|cz|hu|ro|bg|hr|si|sk|lt|lv|ee|ie|pt|gr|tr|il|za|eg|ma|ng|ke|gh|tz|ug|zw|bw|mw|zm|ao|mz|mg|mu|sc|re|yt|km|dj|so|et|er|sd|ly|tn|dz|mr|ml|bf|ne|td|cf|cm|gq|ga|cg|cd|st|gw|gn|sl|lr|ci|gh|tg|bj|sn|gm|cv|bi|rw|ug|ke|tz|mw|zm|ao|mz|mg|mu|sc|re|yt|km|dj|so|et|er|sd|ly|tn|dz|mr|ml|bf|ne|td|cf|cm|gq|ga|cg|cd|st|gw|gn|sl|lr|ci|gh|tg|bj|sn|gm|cv|bi|rw)$/i;
+                          
+                          if (emailRegex.test(emailValue)) {
+                            setTimeout(async () => {
+                              await sendVerificationCode(emailValue);
+                              setShowVerification(true);
+                            }, 800); // Delay leggermente più lungo per permettere di completare la digitazione
+                          }
+                        }}
+                        onKeyPress={(e) => {
+                          if (e.key === 'Enter') {
+                            const emailRegex = /^[^\s@]+@[^\s@]+\.(com|it|org|net|edu|gov|co|uk|de|fr|es|ca|au|jp|br|in|ru|cn|mx|nl|se|no|dk|fi|pl|cz|hu|ro|bg|hr|si|sk|lt|lv|ee|ie|pt|gr|tr|il|za|eg|ma|ng|ke|gh|tz|ug|zw|bw|mw|zm|ao|mz|mg|mu|sc|re|yt|km|dj|so|et|er|sd|ly|tn dz|mr|ml|bf|ne|td|cf|cm|gq|ga|cg|cd|st|gw|gn|sl|lr|ci|gh|tg|bj|sn|gm|cv|bi|rw)$/i;
+                            if (emailRegex.test(email)) {
+                              sendVerificationCode(email);
+                              setShowVerification(true);
+                            }
+                          }
+                        }}
+                        onBlur={() => {
+                          // Anche quando l'utente esce dal campo, controlla se l'email è valida
+                          const emailRegex = /^[^\s@]+@[^\s@]+\.(com|it|org|net|edu|gov|co|uk|de|fr|es|ca|au|jp|br|in|ru|cn|mx|nl|se|no|dk|fi|pl|cz|hu|ro|bg|hr|si|sk|lt|lv|ee|ie|pt|gr|tr|il|za|eg|ma|ng|ke|gh|tz|ug|zw|bw|mw|zm|ao|mz|mg|mu|sc|re|yt|km|dj|so|et|er|sd|ly|tn|dz|mr|ml|bf|ne|td|cf|cm|gq|ga|cg|cd|st|gw|gn|sl|lr|ci|gh|tg|bj|sn|gm|cv|bi|rw)$/i;
+                          if (emailRegex.test(email)) {
+                            setShowVerification(true);
+                          }
+                        }}
+                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors text-black"
+                        placeholder=""
+                      />
+                    </div>
+                  ) : (
+                  <div className="transition-all duration-300 ease-in-out">
+                    <div className="mb-3 py-2 px-3 bg-gray-50 rounded-md">
+                      <div className="flex items-center justify-between">
+                        <span className="text-sm text-gray-600">{email}</span>
+                        <button 
+                          onClick={() => {
+                            setShowVerification(false);
+                            setVerificationCode(['', '', '', '', '', '']);
+                          }}
+                          className="text-gray-400 hover:text-gray-600 text-sm"
+                        >
+                          ✕
+                        </button>
+                      </div>
+                    </div>
+                    
+                    <div className="mb-3">
+                      <h3 className="text-base font-medium text-gray-900 mb-2">Enter your verification code</h3>
+                      <p className="text-xs text-gray-600 mb-3">
+                        Enter the code sent to <span className="font-medium text-gray-900">{email}</span> to securely authenticate your account.
+                      </p>
+                      
+                      <div className="flex gap-2 mb-3">
+                        {verificationCode.map((digit, index) => (
+                          <input
+                            key={index}
+                            type="text"
+                            maxLength={1}
+                            value={digit}
+                            onChange={(e) => {
+                              const newCode = [...verificationCode];
+                              newCode[index] = e.target.value;
+                              setVerificationCode(newCode);
+                              
+                              // Reset error when user starts typing
+                              if (verificationError || codeError) {
+                                setVerificationError(false);
+                                setCodeError('');
+                              }
+                              
+                              // Auto-focus next input
+                              if (e.target.value && index < 5) {
+                                const nextInput = document.getElementById(`code-${index + 1}`);
+                                nextInput?.focus();
+                              }
+                              
+                              // Check if code is complete and validate
+                              validateCode(newCode);
+                            }}
+                            onKeyDown={(e) => {
+                              // Handle backspace
+                              if (e.key === 'Backspace' && !verificationCode[index] && index > 0) {
+                                const prevInput = document.getElementById(`code-${index - 1}`);
+                                prevInput?.focus();
+                              }
+                            }}
+                            id={`code-${index}`}
+                            className={`w-10 h-10 text-center text-base font-medium border rounded-md focus:outline-none focus:ring-2 text-black ${
+                              verificationError || codeError
+                                ? 'border-red-500 focus:ring-red-500 focus:border-red-500' 
+                                : 'border-gray-300 focus:ring-blue-500 focus:border-blue-500'
+                            }`}
+                          />
+                        ))}
+                      </div>
+                      
+                      {/* Notifica di errore unificata */}
+                      {(verificationError || codeError) && (
+                        <div className="mb-3 p-2 bg-red-50 border border-red-200 rounded-md">
+                          <div className="flex items-center gap-2">
+                            <span className="text-red-500 text-sm">⚠</span>
+                            <span className="text-red-700 text-xs font-medium">
+                              {codeError || 'Verification code was invalid'}
+                            </span>
+                          </div>
+                        </div>
+                      )}
+                      
+                      {/* Notifica di successo per resend code */}
+                      {resendSuccess && (
+                        <div className="mb-3 p-2 bg-green-50 border border-green-200 rounded-md">
+                          <div className="flex items-center gap-2">
+                            <span className="text-green-500 text-sm">✓</span>
+                            <span className="text-green-700 text-xs font-medium">Verification code has been resent to your email.</span>
+                          </div>
+                        </div>
+                      )}
+                      
+                      <div className="text-xs text-gray-600 mb-2">
+                        Didn't receive code? 
+                        <button 
+                          onClick={handleResendCode}
+                          disabled={resendCooldown > 0 || isResending}
+                          className={`ml-1 ${
+                            resendCooldown > 0 || isResending 
+                              ? 'text-gray-400 cursor-not-allowed' 
+                              : 'text-blue-600 hover:underline'
+                          }`}
+                        >
+                          {isResending 
+                            ? 'Sending...' 
+                            : resendCooldown > 0 
+                              ? `Resend code (${resendCooldown}s)` 
+                              : 'Resend code'
+                          }
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                  )
+                ) : (
+                   <div className="mb-4">
+                     {/* Profilo utente verificato */}
+                     <div className="flex items-center gap-3 p-3 bg-white border border-gray-200 rounded-lg">
+                       {/* Avatar con iniziali */}
+                       <div className="w-12 h-12 bg-green-600 rounded-full flex items-center justify-center">
+                         <span className="text-white font-semibold text-lg">
+                           {customerName.split(' ').map(name => name.charAt(0)).join('')}
+                         </span>
+                       </div>
+                       
+                       {/* Informazioni utente */}
+                       <div className="flex-1">
+                         <h3 className="text-base font-semibold text-gray-900 select-none">{customerName}</h3>
+                         <p className="text-sm text-gray-600 select-none">{email}</p>
+                       </div>
+                       
+                       {/* Pulsante Sign out */}
+                       <button 
+                         onClick={() => {
+                           setIsEmailVerified(false);
+                           setShowVerification(false);
+                           setEmail('');
+                           setVerificationCode(['', '', '', '', '', '']);
+                           setSessionExpiry(null); // Reset della sessione
+                           // Rimuovi la sessione dal localStorage
+                           localStorage.removeItem('userSession');
+                         }}
+                         className="px-3 py-1 text-sm text-gray-600 hover:text-gray-800 border border-gray-300 rounded-md hover:bg-gray-50 transition-colors"
+                       >
+                         Sign out
+                       </button>
+                     </div>
+                   </div>
+                )}
+                
+                {/* Payment Method Box - Always visible but conditionally interactive */}
+                <div className="mt-4 p-4 bg-white rounded-lg">
+                  <div className="flex items-center gap-2 mb-4">
+                    <h3 className="text-lg font-semibold text-gray-900">Payment Method</h3>
+                  </div>
+                  
+                  {/* Wallet Transfer Option */}
+                  <div className={`p-3 border border-gray-200 rounded-lg transition-colors ${
+                    isEmailVerified 
+                      ? 'hover:bg-gray-50 cursor-pointer' 
+                      : 'bg-gray-100 cursor-not-allowed opacity-60'
+                  }`}>
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-3">
+                        <div className="w-6 h-6 flex items-center justify-center">
+                          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 2L13.09 8.26L19 7L17.74 13.26L24 12L17.74 10.74L19 17L13.09 15.74L12 22L10.91 15.74L5 17L6.26 10.74L0 12L6.26 13.26L5 7L10.91 8.26L12 2Z" fill="currentColor"/>
+                          </svg>
+                        </div>
+                        <span className="font-medium text-gray-900">Wallet Transfer</span>
+                      </div>
+                      <div className="flex items-center gap-1">
+                        {/* Crypto icons */}
+                        <div className="w-6 h-6 bg-orange-500 rounded-full flex items-center justify-center">
+                          <span className="text-white text-xs font-bold">₿</span>
+                        </div>
+                        <div className="w-6 h-6 bg-blue-600 rounded-full flex items-center justify-center">
+                          <span className="text-white text-xs font-bold">Ξ</span>
+                        </div>
+                        <div className="w-6 h-6 bg-gray-400 rounded-full flex items-center justify-center">
+                          <span className="text-white text-xs font-bold">+</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  {/* Message when not verified */}
+                  {!isEmailVerified && (
+                    <div className="mt-3 p-2 bg-blue-50 border border-blue-200 rounded-md">
+                      <div className="flex items-center gap-2">
+                        <span className="text-blue-500 text-sm">ℹ</span>
+                        <span className="text-blue-700 text-xs font-medium">Complete email verification to enable payment options</span>
+                      </div>
+                    </div>
+                  )}
+                </div>
               </div>
             </div>
 
