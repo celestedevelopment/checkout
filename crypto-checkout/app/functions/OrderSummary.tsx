@@ -1,9 +1,9 @@
 'use client';
 
-import StoreHeader from "../Header/StoreHeader";
-import ProductTitle from "../ProductTab/Product/ProductTitle";
-import ProductDescription from "../ProductTab/Product/ProductDescription";
-import FooterDefault from "../Footer/FooterDefault";
+import StoreHeader from "../components/Header/StoreHeader";
+import ProductTitle from "../components/ProductTab/Product/ProductTitle";
+import ProductDescription from "../components/ProductTab/Product/ProductDescription";
+import FooterDefault from "../components/Footer/FooterDefault";
 
 interface OrderSummaryProps {
   isOpen: boolean;

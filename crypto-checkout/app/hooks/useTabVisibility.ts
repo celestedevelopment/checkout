@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 
-interface UseTabVisibilityOptions {
+export interface UseTabVisibilityOptions {
   originalTitle: string;
   hiddenTitle: string;
   enableBlinking?: boolean;

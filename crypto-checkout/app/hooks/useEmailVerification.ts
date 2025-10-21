@@ -73,19 +73,24 @@ export const useEmailVerification = (): UseEmailVerificationReturn => {
   };
 
   // Funzione per validare il codice
-  const validateCode = (code: string[], onSuccess: () => void) => {
+  const validateCode = (code: string[], onSuccess?: () => void) => {
     const fullCode = code.join('');
     if (fullCode.length === 6) {
       if (fullCode === '000000') {
         setCodeError('');
         setShowVerification(false);
         setVerificationError(false);
-        onSuccess();
+        if (onSuccess) {
+          onSuccess();
+        }
+        return true;
       } else {
         setCodeError('Codice non valido. Riprova.');
         setVerificationError(false); // Non usare verificationError per evitare doppie notifiche
+        return false;
       }
     }
+    return false;
   };
 
   const resetVerificationState = () => {
