@@ -3,6 +3,18 @@
 import Image from "next/image";
 import { useState, useEffect } from "react";
 import { useTabVisibility } from "./hooks/useTabVisibility";
+import StoreHeader from "./components/Header/StoreHeader";
+import FooterDefault from "./components/Footer/FooterDefault";
+import ProductTitle from "./components/ProductTab/Product/ProductTitle";
+import ProductDescription from "./components/ProductTab/Product/ProductDescription";
+import MonthlySubscription from "./components/ProductTab/Subscriptions/MonthlySubscription";
+import YearlySubscription from "./components/ProductTab/Subscriptions/YearlySubscription";
+import TotalSection from "./components/ProductTab/FooterProduct/TotalSection";
+import OrderSummary from "./components/PopupSlider/OrderSummary";
+import YourAccountTitle from "./components/ClientAccount/YourAccountTitle";
+import EmailInput from "./components/ClientAccount/EmailInput";
+import VerificationCode from "./components/ClientAccount/VerificationCode";
+import UserProfile from "./components/ClientAccount/UserProfile";
 
 export default function Home() {
   // Implementa l'effetto "Attention Grabber" per attirare l'utente quando cambia tab
@@ -18,7 +30,6 @@ export default function Home() {
   
   const [selectedPlan, setSelectedPlan] = useState('monthly'); // 'monthly' or 'yearly'
   const [showOrderDetails, setShowOrderDetails] = useState(false);
-  const [isDescriptionExpanded, setIsDescriptionExpanded] = useState(false);
   
   // Stati per la verifica email
   const [email, setEmail] = useState('');
@@ -58,10 +69,6 @@ export default function Home() {
       }
     }
   }, []);
-
-  // Versioni della descrizione del prodotto
-  const shortDescription = "You're one step away from building a creative business you love...";
-  const fullDescription = "You're one step away from building a creative business you love. Next up: Create a portfolio you adore, attract dream clients, and get off the revenue rollercoaster.";
 
   // Blocca lo scroll del body quando il popup è aperto
   useEffect(() => {
@@ -106,7 +113,7 @@ export default function Home() {
   }, [sessionExpiry]);
 
   // Funzione per simulare l'invio dell'email con il codice
-  const sendVerificationCode = async (emailAddress) => {
+  const sendVerificationCode = async (emailAddress: string) => {
     console.log(`Simulazione invio email a: ${emailAddress}`);
     console.log('Codice di verifica: 000000');
     // Qui andrà la logica vera per l'invio dell'email
@@ -152,7 +159,7 @@ export default function Home() {
   };
 
   // Funzione per validare il codice
-  const validateCode = (code) => {
+  const validateCode = (code: string[]) => {
     const fullCode = code.join('');
     if (fullCode.length === 6) {
       if (fullCode === '000000') {
@@ -182,166 +189,35 @@ export default function Home() {
         {/* Sezione sinistra (top su mobile) - Store Info */}
         <div className="w-full md:w-1/2 h-1/3 md:h-full p-8 flex flex-col" style={{backgroundColor: '#F7F9FA'}}>
           {/* Logo e nome store in alto */}
-          <div className="flex items-center gap-3 mb-8">
-            <a 
-              href="https://example-store.com" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="block"
-            >
-              <Image
-                src="/favicon.png"
-                alt="Store Logo"
-                width={32}
-                height={32}
-                className="rounded cursor-pointer hover:opacity-80 transition-opacity"
-              />
-            </a>
-            <h1 className="text-black text-xl font-bold select-none">Nome store</h1>
-          </div>
+          <StoreHeader className="mb-8" />
 
           {/* Product Description Section - Desktop Only */}
           <div className="hidden md:block flex-1 mb-8">
             <div className="bg-white rounded-lg border border-gray-200 p-6 max-w-md shadow-lg">
-              <h2 className="text-2xl font-bold text-gray-900 mb-4 select-none">Maker Division</h2>
-              <p className="text-gray-600 text-sm mb-3 leading-relaxed select-none">
-                {isDescriptionExpanded ? fullDescription : shortDescription}
-              </p>
-              <button 
-                onClick={() => setIsDescriptionExpanded(!isDescriptionExpanded)}
-                className="text-black hover:text-gray-800 text-sm font-medium bg-transparent border-none cursor-pointer"
-              >
-                {isDescriptionExpanded ? 'See less' : 'See more'}
-              </button>
+              <ProductTitle className="mb-4" />
+              <ProductDescription className="mb-4" />
               
-              {/* Price Section - Monthly Plan */}
-                <div 
-                  className={`mt-4 p-4 rounded-lg border-2 cursor-pointer transition-all duration-200 ${
-                    selectedPlan === 'monthly' 
-                      ? 'bg-gray-50 border-black' 
-                      : 'bg-white border-gray-200 hover:border-gray-300'
-                  }`}
-                  onClick={() => setSelectedPlan('monthly')}
-                >
-                  <div className="flex items-center gap-3 mb-2">
-                    <div className={`w-4 h-4 rounded-full flex items-center justify-center ${
-                      selectedPlan === 'monthly' ? 'bg-black' : 'bg-gray-300'
-                    }`}>
-                      {selectedPlan === 'monthly' && (
-                        <svg className="w-2 h-2 text-white" fill="currentColor" viewBox="0 0 20 20">
-                          <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                        </svg>
-                      )}
-                    </div>
-                    <div>
-                      <span className="text-2xl font-bold text-gray-900">$99</span>
-                      <span className="text-gray-600 text-sm ml-1">/month</span>
-                    </div>
-                  </div>
-                  <p className="text-gray-600 text-sm">Monthly subscription</p>
-                </div>
-
-                {/* Price Section - Yearly Plan */}
-                <div 
-                  className={`mt-4 p-4 rounded-lg border-2 cursor-pointer transition-all duration-200 ${
-                    selectedPlan === 'yearly' 
-                      ? 'bg-gray-50 border-black' 
-                      : 'bg-white border-gray-200 hover:border-gray-300'
-                  }`}
-                  onClick={() => setSelectedPlan('yearly')}
-                >
-                  <div className="flex items-center gap-3 mb-2">
-                    <div className={`w-4 h-4 rounded-full flex items-center justify-center ${
-                      selectedPlan === 'yearly' ? 'bg-black' : 'bg-gray-300'
-                    }`}>
-                      {selectedPlan === 'yearly' && (
-                        <svg className="w-2 h-2 text-white" fill="currentColor" viewBox="0 0 20 20">
-                          <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                        </svg>
-                      )}
-                    </div>
-                    <div>
-                      <span className="text-2xl font-bold text-gray-900">$999</span>
-                      <span className="text-gray-600 text-sm ml-1">/year</span>
-                    </div>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <p className="text-gray-600 text-sm">Yearly subscription</p>
-                    <span className="bg-green-100 text-green-800 text-xs font-medium px-2 py-1 rounded">Save 15%</span>
-                  </div>
-                </div>
-
-
+              {/* Subscription Plans */}
+              <MonthlySubscription 
+                isSelected={selectedPlan === 'monthly'}
+                onSelect={() => setSelectedPlan('monthly')}
+              />
+              
+              <YearlySubscription 
+                isSelected={selectedPlan === 'yearly'}
+                onSelect={() => setSelectedPlan('yearly')}
+              />
 
               {/* Total Section */}
-                <div className="mt-6 pt-4 border-t border-gray-200">
-                  <div className="flex justify-between items-center mb-2">
-                    <span className="text-gray-900 font-medium select-none">Total due today</span>
-                    <span className="text-xl font-bold text-gray-900 select-none">
-                      {selectedPlan === 'monthly' ? '$99 USD' : '$999 USD'}
-                    </span>
-                  </div>
-                  <a 
-                    href="#" 
-                    className="text-black hover:text-gray-800 text-sm flex items-center gap-1"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      setShowOrderDetails(true);
-                    }}
-                  >
-                    View order details
-                    <span className="text-xs">→</span>
-                  </a>
-                  <p className="text-gray-500 text-xs mt-2 select-none">
-                    Next payment: {selectedPlan === 'monthly' ? 'Nov 21, 2025' : 'Nov 21, 2026'}
-                  </p>
-                </div>
+              <TotalSection 
+                selectedPlan={selectedPlan as 'monthly' | 'yearly'}
+                onShowOrderDetails={() => setShowOrderDetails(true)}
+              />
             </div>
           </div>
 
           {/* Powered by Acctual in basso */}
-          <div className="flex items-center justify-between mt-auto">
-            <div className="flex items-center gap-2">
-              <span className="text-black text-sm font-normal select-none">powered by</span>
-              <a 
-                href="https://acctual.com" 
-                target="_blank" 
-                rel="noopener noreferrer"
-              >
-                <Image
-                  src="/acctual.com logo.svg"
-                  alt="Acctual Logo"
-                  width={80}
-                  height={24}
-                  className="h-6 w-auto cursor-pointer hover:opacity-80 transition-opacity"
-                />
-              </a>
-            </div>
-            <div className="flex gap-4 text-black text-sm font-normal">
-              <a 
-                href="https://t.me/example" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="hover:underline cursor-pointer"
-              >
-                Telegram
-              </a>
-              <a 
-                href="mailto:info@azienda.com"
-                className="hover:underline cursor-pointer"
-              >
-                Contact
-              </a>
-              <a 
-                href="https://example-store.com/shop" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="hover:underline cursor-pointer"
-              >
-                Store
-              </a>
-            </div>
-          </div>
+          <FooterDefault />
         </div>
 
       {/* Right side - Scrollable, white background (Desktop) / Bottom section (Mobile) */}
@@ -376,197 +252,44 @@ export default function Home() {
             {/* Desktop Content - Your account section */}
             <div className="hidden md:block w-full max-w-md">
               <div className="bg-white p-6">
-                <h2 className="text-2xl font-bold text-gray-900 mb-6 select-none">Your account</h2>
+                <YourAccountTitle />
                 
                 {!isEmailVerified ? (
                   !showVerification ? (
-                    <div className="mb-4">
-                      <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2 select-none">
-                        Email address
-                      </label>
-                      <input
-                        type="email"
-                        id="email"
-                        name="email"
-                        value={email}
-                        onChange={(e) => {
-                          setEmail(e.target.value);
-                          // Controlla automaticamente se l'email è valida con un dominio completo
-                          const emailValue = e.target.value;
-                          const emailRegex = /^[^\s@]+@[^\s@]+\.(com|it|org|net|edu|gov|co|uk|de|fr|es|ca|au|jp|br|in|ru|cn|mx|nl|se|no|dk|fi|pl|cz|hu|ro|bg|hr|si|sk|lt|lv|ee|ie|pt|gr|tr|il|za|eg|ma|ng|ke|gh|tz|ug|zw|bw|mw|zm|ao|mz|mg|mu|sc|re|yt|km|dj|so|et|er|sd|ly|tn|dz|mr|ml|bf|ne|td|cf|cm|gq|ga|cg|cd|st|gw|gn|sl|lr|ci|gh|tg|bj|sn|gm|cv|bi|rw|ug|ke|tz|mw|zm|ao|mz|mg|mu|sc|re|yt|km|dj|so|et|er|sd|ly|tn|dz|mr|ml|bf|ne|td|cf|cm|gq|ga|cg|cd|st|gw|gn|sl|lr|ci|gh|tg|bj|sn|gm|cv|bi|rw)$/i;
-                          
-                          if (emailRegex.test(emailValue)) {
-                            setTimeout(async () => {
-                              await sendVerificationCode(emailValue);
-                              setShowVerification(true);
-                            }, 800); // Delay leggermente più lungo per permettere di completare la digitazione
-                          }
-                        }}
-                        onKeyPress={(e) => {
-                          if (e.key === 'Enter') {
-                            const emailRegex = /^[^\s@]+@[^\s@]+\.(com|it|org|net|edu|gov|co|uk|de|fr|es|ca|au|jp|br|in|ru|cn|mx|nl|se|no|dk|fi|pl|cz|hu|ro|bg|hr|si|sk|lt|lv|ee|ie|pt|gr|tr|il|za|eg|ma|ng|ke|gh|tz|ug|zw|bw|mw|zm|ao|mz|mg|mu|sc|re|yt|km|dj|so|et|er|sd|ly|tn dz|mr|ml|bf|ne|td|cf|cm|gq|ga|cg|cd|st|gw|gn|sl|lr|ci|gh|tg|bj|sn|gm|cv|bi|rw)$/i;
-                            if (emailRegex.test(email)) {
-                              sendVerificationCode(email);
-                              setShowVerification(true);
-                            }
-                          }
-                        }}
-                        onBlur={() => {
-                          // Anche quando l'utente esce dal campo, controlla se l'email è valida
-                          const emailRegex = /^[^\s@]+@[^\s@]+\.(com|it|org|net|edu|gov|co|uk|de|fr|es|ca|au|jp|br|in|ru|cn|mx|nl|se|no|dk|fi|pl|cz|hu|ro|bg|hr|si|sk|lt|lv|ee|ie|pt|gr|tr|il|za|eg|ma|ng|ke|gh|tz|ug|zw|bw|mw|zm|ao|mz|mg|mu|sc|re|yt|km|dj|so|et|er|sd|ly|tn|dz|mr|ml|bf|ne|td|cf|cm|gq|ga|cg|cd|st|gw|gn|sl|lr|ci|gh|tg|bj|sn|gm|cv|bi|rw)$/i;
-                          if (emailRegex.test(email)) {
-                            setShowVerification(true);
-                          }
-                        }}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors text-black"
-                        placeholder=""
-                      />
-                    </div>
+                    <EmailInput 
+                      email={email}
+                      onEmailChange={setEmail}
+                      sendVerificationCode={sendVerificationCode}
+                      onVerificationStart={() => setShowVerification(true)}
+                    />
                   ) : (
-                  <div className="transition-all duration-300 ease-in-out">
-                    <div className="mb-3 py-2 px-3 bg-gray-50 rounded-md">
-                      <div className="flex items-center justify-between">
-                        <span className="text-sm text-gray-600">{email}</span>
-                        <button 
-                          onClick={() => {
-                            setShowVerification(false);
-                            setVerificationCode(['', '', '', '', '', '']);
-                          }}
-                          className="text-gray-400 hover:text-gray-600 text-sm"
-                        >
-                          ✕
-                        </button>
-                      </div>
-                    </div>
-                    
-                    <div className="mb-3">
-                      <h3 className="text-base font-medium text-gray-900 mb-2">Enter your verification code</h3>
-                      <p className="text-xs text-gray-600 mb-3">
-                        Enter the code sent to <span className="font-medium text-gray-900">{email}</span> to securely authenticate your account.
-                      </p>
-                      
-                      <div className="flex gap-2 mb-3">
-                        {verificationCode.map((digit, index) => (
-                          <input
-                            key={index}
-                            type="text"
-                            maxLength={1}
-                            value={digit}
-                            onChange={(e) => {
-                              const newCode = [...verificationCode];
-                              newCode[index] = e.target.value;
-                              setVerificationCode(newCode);
-                              
-                              // Reset error when user starts typing
-                              if (verificationError || codeError) {
-                                setVerificationError(false);
-                                setCodeError('');
-                              }
-                              
-                              // Auto-focus next input
-                              if (e.target.value && index < 5) {
-                                const nextInput = document.getElementById(`code-${index + 1}`);
-                                nextInput?.focus();
-                              }
-                              
-                              // Check if code is complete and validate
-                              validateCode(newCode);
-                            }}
-                            onKeyDown={(e) => {
-                              // Handle backspace
-                              if (e.key === 'Backspace' && !verificationCode[index] && index > 0) {
-                                const prevInput = document.getElementById(`code-${index - 1}`);
-                                prevInput?.focus();
-                              }
-                            }}
-                            id={`code-${index}`}
-                            className={`w-10 h-10 text-center text-base font-medium border rounded-md focus:outline-none focus:ring-2 text-black ${
-                              verificationError || codeError
-                                ? 'border-red-500 focus:ring-red-500 focus:border-red-500' 
-                                : 'border-gray-300 focus:ring-blue-500 focus:border-blue-500'
-                            }`}
-                          />
-                        ))}
-                      </div>
-                      
-                      {/* Notifica di errore unificata */}
-                      {(verificationError || codeError) && (
-                        <div className="mb-3 p-2 bg-red-50 border border-red-200 rounded-md">
-                          <div className="flex items-center gap-2">
-                            <span className="text-red-500 text-sm">⚠</span>
-                            <span className="text-red-700 text-xs font-medium">
-                              {codeError || 'Verification code was invalid'}
-                            </span>
-                          </div>
-                        </div>
-                      )}
-                      
-                      {/* Notifica di successo per resend code */}
-                      {resendSuccess && (
-                        <div className="mb-3 p-2 bg-green-50 border border-green-200 rounded-md">
-                          <div className="flex items-center gap-2">
-                            <span className="text-green-500 text-sm">✓</span>
-                            <span className="text-green-700 text-xs font-medium">Verification code has been resent to your email.</span>
-                          </div>
-                        </div>
-                      )}
-                      
-                      <div className="text-xs text-gray-600 mb-2">
-                        Didn't receive code? 
-                        <button 
-                          onClick={handleResendCode}
-                          disabled={resendCooldown > 0 || isResending}
-                          className={`ml-1 ${
-                            resendCooldown > 0 || isResending 
-                              ? 'text-gray-400 cursor-not-allowed' 
-                              : 'text-blue-600 hover:underline'
-                          }`}
-                        >
-                          {isResending 
-                            ? 'Sending...' 
-                            : resendCooldown > 0 
-                              ? `Resend code (${resendCooldown}s)` 
-                              : 'Resend code'
-                          }
-                        </button>
-                      </div>
-                    </div>
-                  </div>
+                    <VerificationCode
+                      email={email}
+                      verificationCode={verificationCode}
+                      onCodeChange={setVerificationCode}
+                      onBackToEmail={() => setShowVerification(false)}
+                      onResendCode={handleResendCode}
+                      verificationError={verificationError}
+                      codeError={codeError}
+                      resendCooldown={resendCooldown}
+                      isResending={isResending}
+                      resendSuccess={resendSuccess}
+                      validateCode={validateCode}
+                    />
                   )
                 ) : (
-                   <div className="mb-4">
-                     {/* Profilo utente verificato */}
-                     <div className="flex items-center gap-3 p-3 bg-white border border-gray-200 rounded-lg">
-                       {/* Avatar con iniziali */}
-                       <div className="w-12 h-12 bg-green-600 rounded-full flex items-center justify-center">
-                         <span className="text-white font-semibold text-lg">
-                           {customerName.split(' ').map(name => name.charAt(0)).join('')}
-                         </span>
-                       </div>
-                       
-                       {/* Informazioni utente */}
-                       <div className="flex-1">
-                         <h3 className="text-base font-semibold text-gray-900 select-none">{customerName}</h3>
-                         <p className="text-sm text-gray-600 select-none">{email}</p>
-                       </div>
-                       
-                       {/* Pulsante Sign out */}
-                       <button 
-                         onClick={() => {
-                           setIsEmailVerified(false);
-                           setShowVerification(false);
-                           setEmail('');
-                           setVerificationCode(['', '', '', '', '', '']);
-                           setSessionExpiry(null); // Reset della sessione
-                           // Rimuovi la sessione dal localStorage
-                           localStorage.removeItem('userSession');
-                         }}
-                         className="px-3 py-1 text-sm text-gray-600 hover:text-gray-800 border border-gray-300 rounded-md hover:bg-gray-50 transition-colors"
-                       >
-                         Sign out
-                       </button>
-                     </div>
-                   </div>
+                  <UserProfile
+                    customerName={customerName}
+                    email={email}
+                    onSignOut={() => {
+                      setIsEmailVerified(false);
+                      setShowVerification(false);
+                      setEmail('');
+                      setVerificationCode(['', '', '', '', '', '']);
+                      setSessionExpiry(null);
+                      localStorage.removeItem('emailSession');
+                    }}
+                  />
                 )}
                 
                 {/* Payment Method Box - Always visible but conditionally interactive */}
@@ -590,10 +313,10 @@ export default function Home() {
                           {/* Dynamic Icon based on selected wallet */}
                           <img 
                             src={
-                              selectedWallet === 'BTC' ? "/CryptoIcon/Bitcoin.svg.png" : 
-                              selectedWallet === 'USDT-TRC20' ? "/CryptoIcon/USDT_Logo.png" :
-                              selectedWallet === 'TRX' ? "/CryptoIcon/12114250.png" :
-                              "/CryptoIcon/Circle_USDC_Logo.svg.png"
+                              selectedWallet === 'BTC' ? "/CryptoIcon/Bitcoin/Bitcoin.png" : 
+                              selectedWallet === 'USDT-TRC20' ? "/CryptoIcon/USDT/USDT_Logo.png" :
+                              selectedWallet === 'TRX' ? "/CryptoIcon/Other/12114250.png" :
+                              "/CryptoIcon/USDC/Circle_USDC_Logo.png"
                             }
                             alt={
                               selectedWallet === 'BTC' ? "Bitcoin" : 
@@ -657,7 +380,7 @@ export default function Home() {
                            <div className="flex items-center justify-between">
                              <div className="flex items-center gap-3">
                                <img 
-                                src="/CryptoIcon/Bitcoin.svg.png" 
+                                src="/CryptoIcon/Bitcoin/Bitcoin.png" 
                                 alt="Bitcoin" 
                                 className="w-6 h-6"
                               />
@@ -695,7 +418,7 @@ export default function Home() {
                            <div className="flex items-center justify-between">
                              <div className="flex items-center gap-3">
                                <img 
-                                src="/CryptoIcon/USDT_Logo.png" 
+                                src="/CryptoIcon/USDT/USDT_Logo.png" 
                                 alt="USDT Tron" 
                                 className="w-6 h-6"
                               />
@@ -733,7 +456,7 @@ export default function Home() {
                            <div className="flex items-center justify-between">
                              <div className="flex items-center gap-3">
                                <img 
-                                src="/CryptoIcon/12114250.png" 
+                                src="/CryptoIcon/Other/12114250.png" 
                                 alt="TRX Tron" 
                                 className="w-6 h-6"
                               />
@@ -771,7 +494,7 @@ export default function Home() {
                            <div className="flex items-center justify-between">
                              <div className="flex items-center gap-3">
                                <img 
-                                src="/CryptoIcon/Circle_USDC_Logo.svg.png" 
+                                src="/CryptoIcon/USDC/Circle_USDC_Logo.png" 
                                 alt="USDC Ethereum" 
                                 className="w-6 h-6"
                               />
@@ -818,196 +541,12 @@ export default function Home() {
         </div>
       </div>
 
-      {/* Order Details Popup */}
-      {showOrderDetails && (
-        <div className="fixed inset-0 z-50">
-          {/* Backdrop - only on the left side */}
-          <div 
-            className="absolute inset-0 bg-black bg-opacity-50 md:w-1/2"
-            onClick={() => setShowOrderDetails(false)}
-          ></div>
-          
-          {/* Popup Content - slides from left to right */}
-          <div 
-            className="absolute left-0 top-0 w-full md:w-1/2 h-full overflow-y-auto"
-            style={{backgroundColor: '#F7F9FA'}}
-          >
-            {/* Close Button */}
-            <button
-              onClick={() => setShowOrderDetails(false)}
-              className="absolute top-4 right-4 z-10 w-8 h-8 flex items-center justify-center bg-gray-100 hover:bg-gray-200 rounded-full transition-colors"
-            >
-              <svg className="w-4 h-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-              </svg>
-            </button>
-
-            {/* Order Summary Content */}
-            <div className="p-6">
-              {/* Logo e nome store in alto - stesso della sezione principale */}
-              <div className="flex items-center gap-2 mb-6">
-                <a 
-                  href="https://example-store.com" 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="block"
-                >
-                  <Image
-                    src="/favicon.png"
-                    alt="Store Logo"
-                    width={24}
-                    height={24}
-                    className="rounded cursor-pointer hover:opacity-80 transition-opacity"
-                  />
-                </a>
-                <h1 className="text-black text-lg font-bold select-none">Nome store</h1>
-              </div>
-
-              <h2 className="text-xl font-bold text-gray-900 mb-4 select-none">Order Summary</h2>
-
-              {/* Product Details */}
-              <div className="mb-6">
-                <h3 className="text-base font-semibold text-gray-900 mb-3 select-none">Product</h3>
-                <div className="bg-white rounded-lg p-3 border border-gray-200">
-                  <h4 className="text-sm font-medium text-gray-900 select-none">Maker Division</h4>
-                  <p className="text-xs text-gray-600 mt-1 select-none">
-                    Creative business building course with portfolio creation and client attraction strategies.
-                  </p>
-                </div>
-              </div>
-
-              {/* Subscription Details */}
-              <div className="mb-6">
-                <h3 className="text-base font-semibold text-gray-900 mb-3 select-none">Subscription</h3>
-                <div className="space-y-2">
-                  <div className="flex justify-between items-center">
-                    <span className="text-sm text-gray-700 select-none">Plan</span>
-                    <span className="text-sm font-medium text-gray-900 select-none">
-                      {selectedPlan === 'monthly' ? 'Monthly' : 'Yearly'}
-                    </span>
-                  </div>
-                  <div className="flex justify-between items-center">
-                    <span className="text-sm text-gray-700 select-none">Price</span>
-                    <span className="text-sm font-medium text-gray-900 select-none">
-                      {selectedPlan === 'monthly' ? '$99/month' : '$999/year'}
-                    </span>
-                  </div>
-                  <div className="flex justify-between items-center">
-                    <span className="text-sm text-gray-700 select-none">Billing Cycle</span>
-                    <span className="text-sm font-medium text-gray-900 select-none">
-                      {selectedPlan === 'monthly' ? 'Monthly' : 'Annual'}
-                    </span>
-                  </div>
-                  {selectedPlan === 'yearly' && (
-                    <div className="flex justify-between items-center">
-                      <span className="text-sm text-gray-700 select-none">Savings</span>
-                      <span className="text-sm font-medium text-green-600 select-none">15% off</span>
-                    </div>
-                  )}
-                </div>
-              </div>
-
-              {/* Payment Details */}
-              <div className="mb-6">
-                <h3 className="text-base font-semibold text-gray-900 mb-3 select-none">Payment Details</h3>
-                <div className="space-y-2">
-                  <div className="flex justify-between items-center">
-                    <span className="text-sm text-gray-700 select-none">Subtotal</span>
-                    <span className="text-sm font-medium text-gray-900 select-none">
-                      {selectedPlan === 'monthly' ? '$99.00' : '$999.00'}
-                    </span>
-                  </div>
-                  <div className="flex justify-between items-center">
-                    <span className="text-sm text-gray-700 select-none">Tax</span>
-                    <span className="text-sm font-medium text-gray-900 select-none">$0.00</span>
-                  </div>
-                  <div className="flex justify-between items-center">
-                    <span className="text-sm text-gray-700 select-none">Discount</span>
-                    <span className="text-sm font-medium text-gray-900 select-none">$0.00</span>
-                  </div>
-                  <hr className="my-2" />
-                  <div className="flex justify-between items-center">
-                    <span className="text-base font-semibold text-gray-900 select-none">Total</span>
-                    <span className="text-base font-bold text-gray-900 select-none">
-                      {selectedPlan === 'monthly' ? '$99.00 USD' : '$999.00 USD'}
-                    </span>
-                  </div>
-                </div>
-              </div>
-
-              {/* Next Payment */}
-              <div className="mb-6">
-                <h3 className="text-base font-semibold text-gray-900 mb-3 select-none">Next Payment</h3>
-                <div className="bg-blue-50 rounded-lg p-3">
-                  <div className="flex justify-between items-center">
-                    <span className="text-sm text-blue-700 select-none">Next billing date</span>
-                    <span className="text-sm font-medium text-blue-900 select-none">
-                      {selectedPlan === 'monthly' ? 'Nov 21, 2025' : 'Nov 21, 2026'}
-                    </span>
-                  </div>
-                  <p className="text-xs text-blue-600 mt-1 select-none">
-                    You will be charged {selectedPlan === 'monthly' ? '$99.00' : '$999.00'} on this date.
-                  </p>
-                </div>
-              </div>
-
-              {/* Terms */}
-              <div className="text-xs text-gray-500 mb-4 select-none">
-                <p className="mb-1">
-                  By completing this purchase, you agree to our Terms of Service and Privacy Policy.
-                </p>
-                <p>
-                  You can cancel your subscription at any time from your account settings.
-                </p>
-              </div>
-
-              {/* Footer - powered by Acctual and links */}
-              <div className="flex items-center justify-between mt-4 pt-3 border-t border-gray-200">
-                <div className="flex items-center gap-2">
-                  <span className="text-black text-xs font-normal select-none">powered by</span>
-                  <a 
-                    href="https://acctual.com" 
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                  >
-                    <Image
-                      src="/acctual.com logo.svg"
-                      alt="Acctual Logo"
-                      width={60}
-                      height={18}
-                      className="h-4 w-auto cursor-pointer hover:opacity-80 transition-opacity"
-                    />
-                  </a>
-                </div>
-                <div className="flex gap-3 text-black text-xs font-normal">
-                  <a 
-                    href="https://t.me/example" 
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                    className="hover:underline cursor-pointer"
-                  >
-                    Telegram
-                  </a>
-                  <a 
-                    href="mailto:info@azienda.com"
-                    className="hover:underline cursor-pointer"
-                  >
-                    Contact
-                  </a>
-                  <a 
-                    href="https://example-store.com/shop" 
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                    className="hover:underline cursor-pointer"
-                  >
-                    Store
-                  </a>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
+      {/* Order Summary Popup */}
+      <OrderSummary 
+        isOpen={showOrderDetails}
+        onClose={() => setShowOrderDetails(false)}
+        selectedPlan={selectedPlan as 'monthly' | 'yearly'}
+      />
     </div>
   );
 }
