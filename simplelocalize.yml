@@ -1,0 +1,40 @@
+# SimpleLocalize GitHub App Configuration
+# Documentation: https://simplelocalize.io/docs/integrations/github-app/
+
+pull-request:
+  title: "🌐 Update translations"
+  body: |
+    This PR contains updated translations from SimpleLocalize.
+    
+    Please review the changes before merging.
+  labels:
+    - "translations"
+    - "i18n"
+
+# Upload configuration - English source files
+upload:
+  when:
+    push:
+      branches:
+        - "main"
+        - "develop"
+        - "feature/*"
+  files:
+    - path: "public/locales/en/common.json"
+      format: "single-language-json"
+      language-key: "en"
+      options:
+        - REPLACE_TRANSLATION_IF_FOUND
+        - TRIM_LEADING_AND_TRAILING_WHITESPACES
+
+# Download configuration - All language files
+download:
+  files:
+    - path: "public/locales/{lang}/common.json"
+      format: "single-language-json"
+      language-keys:
+        - "en"
+        - "de"
+        - "es"
+        - "fr"
+        - "it"
