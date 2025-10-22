@@ -1,7 +1,7 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import { useTranslation } from '@/app/hooks/useTranslation';
+import React, { useState, useEffect, useMemo } from 'react';
+import { useTranslation } from '../../hooks/useTranslation';
 import FlagIcon from './FlagIcon';
 
 interface Language {
@@ -16,8 +16,8 @@ export default function LanguageSelector() {
   const [isOpen, setIsOpen] = useState(false);
   const [languages, setLanguages] = useState<Language[]>([]);
 
-  // Define available languages with their display names
-  const availableLanguages: Language[] = [
+  // Define available languages with their display names using useMemo
+  const availableLanguages: Language[] = useMemo(() => [
     { key: 'en', name: 'English' },
     { key: 'de', name: 'Deutsch' },
     { key: 'es', name: 'Español' },
@@ -32,7 +32,7 @@ export default function LanguageSelector() {
     { key: 'es-ar', name: 'Argentina' },
     { key: 'pt-br', name: 'Português' },
     { key: 'hi', name: 'हिन्दी' }
-  ];
+  ], []);
 
   useEffect(() => {
     // Riordina le lingue mettendo quella corrente per prima
@@ -81,7 +81,7 @@ export default function LanguageSelector() {
       <button
         onClick={() => setIsOpen(!isOpen)}
         type="button"
-        className="inline-flex items-center justify-center w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none"
+        className="inline-flex items-center justify-center w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none select-none"
         id={LANGUAGE_SELECTOR_ID}
         aria-expanded={isOpen}
       >
@@ -122,7 +122,7 @@ export default function LanguageSelector() {
                     selectedLanguage.key === language.key
                       ? "bg-gray-100 text-gray-900"
                       : "text-gray-700"
-                  } block px-2 py-2 text-sm text-start items-center inline-flex hover:bg-gray-100 rounded-md mx-1`}
+                  } block px-2 py-2 text-sm text-start items-center inline-flex hover:bg-gray-100 rounded-md mx-1 select-none`}
                   role="menuitem"
                 >
                   <FlagIcon countryCode={language.key} />
