@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import Script from "next/script";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import { TranslationProvider } from "./contexts/TranslationContext";
 import { CurrencyProvider } from "./contexts/CurrencyContext";
 import "./globals.css";
@@ -56,6 +57,7 @@ export default function RootLayout({
             {children}
           </CurrencyProvider>
         </TranslationProvider>
+        <SpeedInsights />
       </body>
     </html>
   );
