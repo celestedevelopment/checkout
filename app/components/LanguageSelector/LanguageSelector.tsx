@@ -46,12 +46,12 @@ export default function LanguageSelector() {
     }
     
     setLanguages(reorderedLanguages);
-  }, [currentLanguage]);
+  }, [currentLanguage, availableLanguages]);
 
   // Handle outside click to close dropdown
   useEffect(() => {
-    const handleWindowClick = (event: any) => {
-      const target = event.target.closest('button');
+    const handleWindowClick = (event: MouseEvent) => {
+      const target = (event.target as Element)?.closest('button');
       if (target && target.id === LANGUAGE_SELECTOR_ID) {
         return;
       }
@@ -113,7 +113,7 @@ export default function LanguageSelector() {
           aria-labelledby={LANGUAGE_SELECTOR_ID}
         >
           <div className="p-2 grid grid-cols-2 gap-2" role="none">
-            {languages.map((language, index) => {
+            {languages.map((language) => {
               return (
                 <button
                   key={language.key}

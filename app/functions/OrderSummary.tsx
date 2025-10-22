@@ -47,7 +47,7 @@ export default function OrderSummary({ isOpen, onClose, selectedPlan }: OrderSum
         {/* Order Summary Content */}
         <div className="p-6">
           {/* Logo e nome store in alto - stesso della sezione principale */}
-          <StoreHeader size="small" className="mb-6" />
+          <StoreHeader className="mb-6" />
 
           <h2 className="text-xl font-bold text-gray-900 mb-4 select-none">{t('orderSummary', 'Order Summary')}</h2>
 
