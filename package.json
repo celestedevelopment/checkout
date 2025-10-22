@@ -12,6 +12,7 @@
     "translations:sync": "npm run translations:upload && npm run translations:fetch"
   },
   "dependencies": {
+    "@heroicons/react": "^2.2.0",
     "@vercel/speed-insights": "^1.2.0",
     "currency.js": "^2.0.4",
     "flag-icons": "^7.5.0",
