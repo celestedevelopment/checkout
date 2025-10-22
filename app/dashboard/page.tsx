@@ -53,7 +53,7 @@ export default function DashboardPage() {
             Utente non trovato
           </h2>
           <p className="text-gray-600">
-            Non è stato possibile caricare i dati dell'utente.
+            Non è stato possibile caricare i dati dell&apos;utente.
           </p>
         </div>
       </div>
@@ -63,8 +63,6 @@ export default function DashboardPage() {
   return (
     <DashboardLayout
       user={user}
-      sidebarCollapsed={sidebarCollapsed}
-      onSidebarToggle={toggleSidebar}
     >
       <DashboardHome user={user} stats={stats} />
     </DashboardLayout>

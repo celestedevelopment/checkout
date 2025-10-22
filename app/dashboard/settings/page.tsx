@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/outline';
 
 interface UserProfile {
@@ -361,7 +361,7 @@ export default function SettingsPage() {
                   <div className="flex items-center justify-between p-4 border rounded-lg">
                     <div>
                       <h3 className="font-medium text-gray-900">Accesso API</h3>
-                      <p className="text-sm text-gray-500">Consenti l'accesso alle API per integrazioni esterne</p>
+                      <p className="text-sm text-gray-500">Consenti l&apos;accesso alle API per integrazioni esterne</p>
                     </div>
                     <label className="relative inline-flex items-center cursor-pointer">
                       <input

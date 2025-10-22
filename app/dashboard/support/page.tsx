@@ -520,7 +520,7 @@ export default function SupportPage() {
                   <span className="text-2xl">🔧</span>
                 </div>
                 <h3 className="font-medium text-gray-900 mb-2">Strumenti per Sviluppatori</h3>
-                <p className="text-sm text-gray-600 mb-4">SDK, plugin e strumenti per semplificare l'integrazione.</p>
+                <p className="text-sm text-gray-600 mb-4">SDK, plugin e strumenti per semplificare l&apos;integrazione.</p>
                 <button className="text-blue-600 hover:text-blue-800 text-sm font-medium">
                   Scarica gli strumenti →
                 </button>
@@ -531,7 +531,7 @@ export default function SupportPage() {
                   <span className="text-2xl">🏆</span>
                 </div>
                 <h3 className="font-medium text-gray-900 mb-2">Best Practices</h3>
-                <p className="text-sm text-gray-600 mb-4">Consigli e migliori pratiche per ottimizzare l'uso di BoomFi.</p>
+                <p className="text-sm text-gray-600 mb-4">Consigli e migliori pratiche per ottimizzare l&apos;uso di BoomFi.</p>
                 <button className="text-blue-600 hover:text-blue-800 text-sm font-medium">
                   Leggi le best practices →
                 </button>

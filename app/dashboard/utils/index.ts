@@ -1,4 +1,4 @@
-import { DashboardUser, UserSubscription } from '../types';
+import { UserSubscription } from '../types';
 
 // User utilities
 export const getUserInitials = (name: string): string => {
@@ -138,7 +138,7 @@ export const getDashboardStorageKey = (userId: string, key: string): string => {
   return `dashboard_${userId}_${key}`;
 };
 
-export const saveDashboardPreference = (userId: string, key: string, value: any): void => {
+export const saveDashboardPreference = (userId: string, key: string, value: unknown): void => {
   try {
     localStorage.setItem(getDashboardStorageKey(userId, key), JSON.stringify(value));
   } catch (error) {

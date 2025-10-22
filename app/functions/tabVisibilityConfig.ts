@@ -1,4 +1,3 @@
-import { UseTabVisibilityOptions } from '../hooks/useTabVisibility';
 import { getCheckoutTabConfig, TAB_CONFIG } from '../constants/config/tabs';
 
 /**

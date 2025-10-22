@@ -56,24 +56,27 @@ export const useDashboard = (userId?: string): UseDashboardReturn => {
         email: 'mario.rossi@example.com',
         avatar: '',
         subscription: {
-          plan: 'pro',
+          id: 'sub_123',
+          plan: 'premium',
           status: 'active',
           startDate: new Date('2024-01-01'),
           endDate: new Date('2024-12-31'),
-          features: ['unlimited_transactions', 'priority_support', 'advanced_analytics']
+          autoRenew: true,
+          paymentMethod: 'card'
         },
         preferences: {
           theme: 'light',
           language: 'it',
           currency: 'EUR',
+          timezone: 'Europe/Rome',
           notifications: {
             email: true,
             push: true,
-            sms: false
+            marketing: false
           }
         },
         createdAt: new Date('2024-01-01'),
-        lastLoginAt: new Date()
+        lastLogin: new Date()
       };
 
       setUser(mockUserData);
@@ -95,32 +98,9 @@ export const useDashboard = (userId?: string): UseDashboardReturn => {
       const mockStatsData: DashboardStats = {
         totalTransactions: 1247,
         totalAmount: 45678.90,
+        currency: 'EUR',
         activeSubscriptions: 3,
-        accountStatus: 'verified',
-        monthlyGrowth: 12.5,
-        recentActivity: [
-          {
-            id: '1',
-            type: 'transaction',
-            description: 'Pagamento ricevuto da Cliente ABC',
-            amount: 250.00,
-            date: new Date(Date.now() - 2 * 60 * 60 * 1000) // 2 ore fa
-          },
-          {
-            id: '2',
-            type: 'subscription',
-            description: 'Rinnovo piano Pro',
-            amount: 29.99,
-            date: new Date(Date.now() - 24 * 60 * 60 * 1000) // 1 giorno fa
-          },
-          {
-            id: '3',
-            type: 'transaction',
-            description: 'Pagamento inviato a Fornitore XYZ',
-            amount: -150.00,
-            date: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000) // 3 giorni fa
-          }
-        ]
+        monthlyGrowth: 12.5
       };
 
       setStats(mockStatsData);

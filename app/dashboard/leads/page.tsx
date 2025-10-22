@@ -7,7 +7,6 @@ import {
   EnvelopeIcon,
   CalendarIcon,
   ChartBarIcon,
-  FunnelIcon,
   PlusIcon,
   EyeIcon,
   PencilIcon,
@@ -15,8 +14,7 @@ import {
   MagnifyingGlassIcon,
   ArrowUpIcon,
   ArrowDownIcon,
-  StarIcon,
-  ClockIcon
+  StarIcon
 } from '@heroicons/react/24/outline';
 
 interface Lead {
@@ -232,7 +230,6 @@ export default function LeadsPage() {
   // Calculate statistics
   const totalLeads = leads.length;
   const newLeads = leads.filter(l => l.status === 'new').length;
-  const qualifiedLeads = leads.filter(l => ['qualified', 'proposal', 'negotiation'].includes(l.status)).length;
   const closedWonLeads = leads.filter(l => l.status === 'closed-won').length;
   const totalValue = leads.reduce((sum, lead) => sum + (lead.value * lead.probability / 100), 0);
   const conversionRate = totalLeads > 0 ? (closedWonLeads / totalLeads * 100) : 0;
