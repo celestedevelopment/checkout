@@ -21,7 +21,12 @@ export default function FlagIcon({ countryCode, className = '' }: FlagIconProps)
     'tr': 'tr', // Turco -> Turchia
     'es-ar': 'ar', // Spagnolo (Argentina) -> Argentina
     'pt-br': 'br', // Portoghese (Brasile) -> Brasile
-    'hi': 'in'  // Hindi -> India
+    'hi': 'in', // Hindi -> India
+    'pl': 'pl', // Polacco -> Polonia
+    'ja': 'jp', // Giapponese -> Giappone
+    'zh': 'cn', // Cinese -> Cina
+    'ng': 'ng', // Nigeria -> Nigeria
+    'ph': 'ph'  // Filipino -> Filippine
   };
 
   const flagCountryCode = languageToCountryMap[countryCode.toLowerCase()] || countryCode.toLowerCase();

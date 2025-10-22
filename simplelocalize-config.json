@@ -10,6 +10,6 @@
   "downloadOptions": {
     "downloadPath": "./public/locales/{lang}/common.json",
     "downloadFormat": "single-language-json",
-    "languageKeys": ["en", "de", "es", "fr", "it", "ru", "uk", "ar", "en-sg", "vi", "tr", "es-ar", "pt-br", "hi"]
+    "languageKeys": ["en", "de", "es", "fr", "it", "ru", "uk", "ar", "en-sg", "vi", "tr", "es-ar", "pt-br", "hi", "pl", "ja", "zh", "ng", "ph"]
   }
 }

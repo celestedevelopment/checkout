@@ -31,7 +31,12 @@ export default function LanguageSelector() {
     { key: 'tr', name: 'Türkçe' },
     { key: 'es-ar', name: 'Argentina' },
     { key: 'pt-br', name: 'Português' },
-    { key: 'hi', name: 'हिन्दी' }
+    { key: 'hi', name: 'हिन्दी' },
+    { key: 'pl', name: 'Polski' },
+    { key: 'ja', name: '日本語' },
+    { key: 'zh', name: '中文' },
+    { key: 'ng', name: 'Nigeria' },
+    { key: 'ph', name: 'Filipino' }
   ], []);
 
   useEffect(() => {
