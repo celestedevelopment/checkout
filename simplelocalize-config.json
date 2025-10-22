@@ -1,0 +1,15 @@
+{
+  "apiKey": "c2D30Db26f602db08EAf59CbA7fff53d3Eaaf0B5eB53BC82",
+  "projectToken": "71818d4851ac4240aafdf94e8c320aff",
+  "uploadOptions": {
+    "uploadPath": "./public/locales/en/common.json",
+    "uploadFormat": "single-language-json",
+    "languageKey": "en",
+    "replace": true
+  },
+  "downloadOptions": {
+    "downloadPath": "./public/locales/{lang}/common.json",
+    "downloadFormat": "single-language-json",
+    "languageKeys": ["en", "de", "es", "fr", "it"]
+  }
+}

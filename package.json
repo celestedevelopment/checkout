@@ -6,7 +6,10 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "translations:upload": "node scripts/upload-translations.js",
+    "translations:fetch": "node scripts/fetch-translations.js",
+    "translations:sync": "npm run translations:upload && npm run translations:fetch"
   },
   "dependencies": {
     "currency.js": "^2.0.4",
