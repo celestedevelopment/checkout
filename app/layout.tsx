@@ -4,6 +4,7 @@ import Script from "next/script";
 import { TranslationProvider } from "./contexts/TranslationContext";
 import { CurrencyProvider } from "./contexts/CurrencyContext";
 import "./globals.css";
+import "flag-icons/css/flag-icons.min.css";
 
 const inter = Inter({
   variable: "--font-inter",

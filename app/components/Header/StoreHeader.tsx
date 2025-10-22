@@ -1,32 +1,14 @@
-import Image from 'next/image';
-
-interface Props {
-  size?: 'default' | 'small';
+interface StoreHeaderProps {
   className?: string;
 }
 
-export default function StoreHeader({ size = 'default', className = '' }: Props) {
-  const logoSize = size === 'small' ? 24 : 32;
-  const textSize = size === 'small' ? 'text-lg' : 'text-xl';
-  const gap = size === 'small' ? 'gap-2' : 'gap-3';
-
+export default function StoreHeader({ className = '' }: StoreHeaderProps) {
   return (
-    <div className={`flex items-center ${gap} ${className}`}>
-      <a 
-        href="https://example-store.com" 
-        target="_blank" 
-        rel="noopener noreferrer"
-        className="block"
-      >
-        <Image
-          src="/Header/LogoBoomFI.png"
-          alt="BoomFi Logo"
-          width={logoSize}
-          height={logoSize}
-          className="rounded cursor-pointer hover:opacity-80 transition-opacity"
-        />
-      </a>
-      <h1 className={`text-black ${textSize} font-bold select-none`}>BoomFi</h1>
+    <div className={`flex items-center gap-3 ${className}`}>
+      <div className="w-8 h-8 bg-yellow-400 rounded-lg flex items-center justify-center">
+        <span className="text-black font-bold text-lg select-none">⚡</span>
+      </div>
+      <span className="text-xl font-bold text-gray-900 select-none">BoomFi</span>
     </div>
   );
 }

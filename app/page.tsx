@@ -23,6 +23,7 @@ import YourAccountTitle from "./components/ClientAccount/YourAccountTitle";
 import EmailInput from "./components/ClientAccount/EmailInput";
 import VerificationCode from "./components/ClientAccount/VerificationCode";
 import UserProfile from "./components/ClientAccount/UserProfile";
+import LanguageSelector from "./components/LanguageSelector/LanguageSelector";
 
 export default function Home() {
   // Translation hook
@@ -144,6 +145,11 @@ export default function Home() {
 
             {/* Desktop Content - Your account section */}
             <div className="hidden md:block w-full max-w-md">
+              {/* Language Selector positioned at the top right */}
+              <div className="flex justify-end mb-4">
+                <LanguageSelector />
+              </div>
+              
               <div className="bg-white p-6">
                 <YourAccountTitle />
                 
