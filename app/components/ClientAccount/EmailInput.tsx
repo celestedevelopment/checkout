@@ -1,6 +1,6 @@
 'use client';
-
 import { useT } from '@/app/hooks/useTranslation';
+import { EMAIL_VALIDATION, validateEmail } from '@/app/constants/validation/email';
 
 interface EmailInputProps {
   email: string;
@@ -18,9 +18,7 @@ export default function EmailInput({
   const t = useT();
   
   const validateAndSendCode = async (emailValue: string) => {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.(com|it|org|net|edu|gov|co|uk|de|fr|es|ca|au|jp|br|in|ru|cn|mx|nl|se|no|dk|fi|pl|cz|hu|ro|bg|hr|si|sk|lt|lv|ee|ie|pt|gr|tr|il|za|eg|ma|ng|ke|gh|tz|ug|zw|bw|mw|zm|ao|mz|mg|mu|sc|re|yt|km|dj|so|et|er|sd|ly|tn|dz|mr|ml|bf|ne|td|cf|cm|gq|ga|cg|cd|bi|rw|ug|ke|tz|mw|zm|zw|bw|na|za|ls|sz|mg|mu|sc|re|yt|km|dj|so|et|er|sd|ss|ly|tn|dz|mr|ml|bf|ne|td|cf|cm|gq|ga|cg|cd|bi|rw)$/;
-    
-    if (emailRegex.test(emailValue)) {
+    if (validateEmail(emailValue)) {
       await sendVerificationCode(emailValue);
       onVerificationStart();
     }

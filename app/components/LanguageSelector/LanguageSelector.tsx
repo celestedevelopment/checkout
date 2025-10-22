@@ -1,7 +1,7 @@
 'use client';
-
-import React, { useState, useEffect, useMemo } from 'react';
-import { useTranslation } from '../../hooks/useTranslation';
+import { useState, useEffect, useRef, useMemo } from 'react';
+import { useTranslation } from '@/app/hooks/useTranslation';
+import { UI_CONFIG } from '@/app/constants/config/ui';
 import FlagIcon from './FlagIcon';
 
 interface Language {
@@ -9,12 +9,10 @@ interface Language {
   name: string;
 }
 
-const LANGUAGE_SELECTOR_ID = 'language-selector';
-
 export default function LanguageSelector() {
-  const { language: currentLanguage, setLanguage } = useTranslation();
+  const { t, language: currentLanguage, setLanguage } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
-  const [languages, setLanguages] = useState<Language[]>([]);
+  const dropdownRef = useRef<HTMLDivElement>(null);
 
   // Define available languages with their display names using useMemo
   const availableLanguages: Language[] = useMemo(() => [
@@ -39,6 +37,8 @@ export default function LanguageSelector() {
     { key: 'ph', name: 'Filipino' }
   ], []);
 
+  const [languages, setLanguages] = useState<Language[]>(availableLanguages);
+
   useEffect(() => {
     // Riordina le lingue mettendo quella corrente per prima
     const reorderedLanguages = [...availableLanguages];
@@ -57,7 +57,7 @@ export default function LanguageSelector() {
   useEffect(() => {
     const handleWindowClick = (event: MouseEvent) => {
       const target = (event.target as Element)?.closest('button');
-      if (target && target.id === LANGUAGE_SELECTOR_ID) {
+      if (target && target.id === UI_CONFIG.LANGUAGE_SELECTOR_ID) {
         return;
       }
       setIsOpen(false);
@@ -87,7 +87,7 @@ export default function LanguageSelector() {
         onClick={() => setIsOpen(!isOpen)}
         type="button"
         className="inline-flex items-center justify-center w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none select-none"
-        id={LANGUAGE_SELECTOR_ID}
+        id={UI_CONFIG.LANGUAGE_SELECTOR_ID}
         aria-expanded={isOpen}
       >
         <FlagIcon countryCode={selectedLanguage.key} />
@@ -115,7 +115,7 @@ export default function LanguageSelector() {
           className="origin-top-right absolute right-0 mt-2 w-96 rounded-md shadow-sm bg-white z-50"
           role="menu"
           aria-orientation="vertical"
-          aria-labelledby={LANGUAGE_SELECTOR_ID}
+          aria-labelledby={UI_CONFIG.LANGUAGE_SELECTOR_ID}
         >
           <div className="p-2 grid grid-cols-2 gap-2" role="none">
             {languages.map((language) => {

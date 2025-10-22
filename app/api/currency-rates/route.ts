@@ -1,23 +1,19 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { CURRENCY_API, CURRENCY_CACHE, CURRENCY_DEFAULTS } from '@/app/constants/api/currency';
 
 // Cache for exchange rates (in-memory cache for demo purposes)
 let ratesCache: { rates: Record<string, number>; timestamp: number } | null = null;
-const CACHE_DURATION = 60 * 60 * 1000; // 1 hour in milliseconds
-
-// ExchangeRate-API with API key for better reliability and faster updates
-const API_KEY = '6cffd2b3c58eb79753ccc34b';
-const EXCHANGE_API_URL = `https://v6.exchangerate-api.com/v6/${API_KEY}/latest/USD`;
 
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
-    const from = searchParams.get('from') || 'USD';
-    const to = searchParams.get('to') || 'EUR';
-    const amount = parseFloat(searchParams.get('amount') || '1');
+    const from = searchParams.get('from') || CURRENCY_DEFAULTS.FROM;
+    const to = searchParams.get('to') || CURRENCY_DEFAULTS.TO;
+    const amount = parseFloat(searchParams.get('amount') || CURRENCY_DEFAULTS.AMOUNT.toString());
 
     // Check cache first
     const now = Date.now();
-    if (ratesCache && (now - ratesCache.timestamp) < CACHE_DURATION) {
+    if (ratesCache && (now - ratesCache.timestamp) < CURRENCY_CACHE.DURATION) {
       const rate = calculateRate(from, to, ratesCache.rates);
       const convertedAmount = amount * rate;
       
@@ -33,7 +29,7 @@ export async function GET(request: NextRequest) {
     }
 
     // Fetch fresh rates
-    const response = await fetch(EXCHANGE_API_URL, {
+    const response = await fetch(CURRENCY_API.EXCHANGE_API_URL, {
       next: { revalidate: 3600 } // Cache for 1 hour
     });
 

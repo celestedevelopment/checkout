@@ -4,7 +4,7 @@ import Script from "next/script";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { TranslationProvider } from "./contexts/TranslationContext";
 import { CurrencyProvider } from "./contexts/CurrencyContext";
-import "./globals.css";
+import "./styles/globals.css";
 import "flag-icons/css/flag-icons.min.css";
 
 const inter = Inter({

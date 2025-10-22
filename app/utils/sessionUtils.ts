@@ -1,28 +1,26 @@
+import { SESSION_CONFIG } from '@/app/constants/config/session';
+
 export interface UserSession {
   email: string;
-  customerName: string;
   expiry: number;
 }
 
-export const SESSION_DURATION = 30 * 60 * 1000; // 30 minuti in millisecondi
-export const SESSION_STORAGE_KEY = 'userSession';
-
-export const saveSession = (email: string, customerName: string): number => {
-  const expiryTime = new Date().getTime() + SESSION_DURATION;
+// Salva la sessione utente nel localStorage
+export const saveUserSession = (email: string): void => {
+  const expiryTime = new Date().getTime() + SESSION_CONFIG.DURATION;
   
   const sessionData: UserSession = {
     email,
-    customerName,
-    expiry: expiryTime
+    expiry: expiryTime,
   };
-  
-  localStorage.setItem(SESSION_STORAGE_KEY, JSON.stringify(sessionData));
-  return expiryTime;
+
+  localStorage.setItem(SESSION_CONFIG.STORAGE_KEY, JSON.stringify(sessionData));
+  // return expiryTime; // removed to match void return type
 };
 
 export const loadSession = (): UserSession | null => {
   try {
-    const savedSession = localStorage.getItem(SESSION_STORAGE_KEY);
+    const savedSession = localStorage.getItem(SESSION_CONFIG.STORAGE_KEY);
     if (!savedSession) return null;
     
     const sessionData: UserSession = JSON.parse(savedSession);
@@ -33,18 +31,19 @@ export const loadSession = (): UserSession | null => {
       return sessionData;
     } else {
       // Sessione scaduta, rimuovi dal localStorage
-      clearSession();
+      clearUserSession();
       return null;
     }
   } catch (error) {
     console.error('Errore nel caricamento della sessione:', error);
-    clearSession();
+    clearUserSession();
     return null;
   }
 };
 
-export const clearSession = (): void => {
-  localStorage.removeItem(SESSION_STORAGE_KEY);
+// Rimuove la sessione utente dal localStorage
+export const clearUserSession = (): void => {
+  localStorage.removeItem(SESSION_CONFIG.STORAGE_KEY);
 };
 
 export const isSessionValid = (expiry: number | null): boolean => {
