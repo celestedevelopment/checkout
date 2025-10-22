@@ -22,7 +22,16 @@ export default function LanguageSelector() {
     { key: 'de', name: 'Deutsch' },
     { key: 'es', name: 'Español' },
     { key: 'fr', name: 'Français' },
-    { key: 'it', name: 'Italiano' }
+    { key: 'it', name: 'Italiano' },
+    { key: 'ru', name: 'Русский' },
+    { key: 'uk', name: 'Українська' },
+    { key: 'ar', name: 'العربية' },
+    { key: 'en-sg', name: 'Singapore' },
+    { key: 'vi', name: 'Tiếng Việt' },
+    { key: 'tr', name: 'Türkçe' },
+    { key: 'es-ar', name: 'Argentina' },
+    { key: 'pt-br', name: 'Português' },
+    { key: 'hi', name: 'हिन्दी' }
   ];
 
   useEffect(() => {
